@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Command Injection Lab | VulnLab</title>
+
+<link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="container navbar-content">
+        <div class="logo">
+            <span class="logo-glow">V</span>ulnLab
+        </div>
+
+        <div class="nav-links">
+
+    <a href="../dashboard.html">
+        Dashboard
+    </a>
+
+    <a href="../profile.html">
+        Profile
+    </a>
+
+    <a href="../leaderboard.html">
+        Leaderboard
+    </a>
+
+    <a href="../index.html">
+        Home
+    </a>
+
+</div>
+    </div>
+</nav>
+
+<section class="features">
+    <div class="container">
+
+        <div class="section-title">
+            <h2>Command Injection Lab — Network Diagnostic Tool</h2>
+            <p>
+                Objective: Abuse the internal ping tool to retrieve the administrator backup password.
+            </p>
+        </div>
+
+        <div class="features-grid">
+
+            <div class="feature-card">
+                <div class="feature-icon">01</div>
+                <h3>Scenario</h3>
+                <p>
+                    Employees can test network connectivity using a ping utility.
+                    Investigate whether the host input is safely handled.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">02</div>
+                <h3>Hint</h3>
+                <p>
+                    Try a normal IP first. Then observe whether shell operators can change the command behavior.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">03</div>
+                <h3>Goal</h3>
+                <p>
+                    Find the administrator backup password stored somewhere inside the backend files.
+                </p>
+            </div>
+
+        </div>
+
+        <br><br>
+
+        <div class="feature-card">
+            <h3>Internal Ping Utility</h3>
+
+            <p style="color:#94a3b8;margin:15px 0;">
+                Enter a host or IP address to test connectivity.
+            </p>
+
+            <form id="cmdiForm" class="auth-form">
+                <input
+                    type="text"
+                    id="hostInput"
+                    placeholder="Example: 8.8.8.8"
+                    value="8.8.8.8"
+                >
+
+                <button type="submit" class="btn btn-primary">
+                    Run Ping
+                </button>
+            </form>
+
+            <p id="cmdiMessage" class="form-message"></p>
+
+            <br>
+
+            <h3>Command Output</h3>
+
+            <pre
+                id="cmdiOutput"
+                style="
+                margin-top:15px;
+                background:rgba(0,0,0,0.35);
+                padding:20px;
+                border-radius:14px;
+                overflow:auto;
+                min-height:160px;
+                "
+            >Waiting...</pre>
+        </div>
+
+    </div>
+</section>
+
+<script src="../js/config.js"></script>
+<script src="../js/cmdi.js"></script>
+</body>
+</html>

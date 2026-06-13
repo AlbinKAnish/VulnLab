@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWT Lab | VulnLab</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="container navbar-content">
+        <div class="logo">
+            <span class="logo-glow">V</span>ulnLab
+        </div>
+
+        <div class="nav-links">
+
+    <a href="../dashboard.html">
+        Dashboard
+    </a>
+
+    <a href="../profile.html">
+        Profile
+    </a>
+
+    <a href="../leaderboard.html">
+        Leaderboard
+    </a>
+
+    <a href="../index.html">
+        Home
+    </a>
+
+</div>
+    </div>
+</nav>
+
+<section class="features">
+    <div class="container">
+
+        <div class="section-title">
+            <h2>JWT Lab — Employee Portal</h2>
+            <p>Objective: Escalate access to the payroll portal by analyzing and modifying JWT claims.</p>
+        </div>
+
+        <div class="features-grid">
+
+            <div class="feature-card">
+                <div class="feature-icon">01</div>
+                <h3>Scenario</h3>
+                <p>
+                    Alex is a support employee. Payroll access is restricted to HR staff or L3 employees.
+                    Your task is to understand why access is denied and find a way to retrieve the payroll bonus code.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">02</div>
+                <h3>Hint</h3>
+                <p>
+                    JWTs contain encoded claims. Inspect the token and look for authorization-related fields.
+                </p>
+                <br>
+                <p>Research: <strong>JWT claim tampering and weak signing secrets</strong></p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">03</div>
+                <h3>Goal</h3>
+                <p>
+                    Access the payroll portal and retrieve the confidential bonus code.
+                </p>
+            </div>
+
+        </div>
+
+        <br><br>
+
+        <div class="feature-card">
+            <h3>Employee Login</h3>
+
+            <p style="margin: 15px 0; color:#94a3b8;">
+                Demo credentials are provided for the lab:
+                <br>
+                <strong>Username:</strong> alex
+                <br>
+                <strong>Password:</strong> alex123
+            </p>
+
+            <form id="jwtLoginForm" class="auth-form">
+                <input type="text" id="jwtUsername" placeholder="Username" value="alex">
+                <input type="password" id="jwtPassword" placeholder="Password" value="alex123">
+                <button type="submit" class="btn btn-primary">Login as Employee</button>
+            </form>
+
+            <p id="jwtLoginMessage" class="form-message"></p>
+
+            <br>
+
+            <h3>Received JWT</h3>
+            <pre id="jwtTokenBox" style="margin-top:15px; background:rgba(0,0,0,0.35); padding:20px; border-radius:14px; overflow:auto;"></pre>
+        </div>
+
+        <br><br>
+
+        <div class="feature-card">
+            <h3>Payroll Portal</h3>
+
+            <p style="margin: 15px 0; color:#94a3b8;">
+                Try accessing payroll using the current token. If access is denied, inspect the JWT and think about why.
+            </p>
+
+            <button class="btn btn-primary" id="accessPayrollBtn">
+                Access Payroll
+            </button>
+
+            <br><br>
+
+            <h3>Custom JWT Token</h3>
+
+            <p style="margin: 15px 0; color:#94a3b8;">
+                Paste a modified JWT here after analyzing and re-signing the token.
+            </p>
+
+            <textarea
+                id="customJwt"
+                placeholder="Paste modified JWT token here..."
+                style="
+                    width:100%;
+                    min-height:120px;
+                    padding:15px;
+                    border-radius:14px;
+                    background:rgba(255,255,255,0.06);
+                    border:1px solid rgba(255,255,255,0.1);
+                    color:white;
+                    outline:none;
+                    resize:vertical;
+                "
+            ></textarea>
+
+            <br><br>
+
+            <button class="btn btn-secondary" id="accessWithCustomTokenBtn">
+                Access Payroll with Custom Token
+            </button>
+
+            <p id="jwtPayrollMessage" class="form-message"></p>
+
+            <br>
+
+            <h3>Response Output</h3>
+            <pre id="jwtOutput" style="margin-top:15px; background:rgba(0,0,0,0.35); padding:20px; border-radius:14px; overflow:auto;"></pre>
+        </div>
+
+    </div>
+</section>
+
+<script src="../js/config.js"></script>
+<script src="../js/jwt.js"></script>
+</body>
+</html>

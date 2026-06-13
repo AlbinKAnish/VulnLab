@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Panel | VulnLab</title>
+
+<link rel="stylesheet" href="css/style.css">
+
+<style>
+.admin-wrapper {
+    max-width: 1280px;
+    margin: auto;
+}
+
+.admin-hero {
+    padding: 36px;
+    border-radius: 30px;
+    background:
+        linear-gradient(135deg, rgba(56,189,248,0.20), transparent 42%),
+        linear-gradient(220deg, rgba(168,85,247,0.12), transparent 45%),
+        rgba(255,255,255,0.05);
+    border: 1px solid rgba(56,189,248,0.28);
+    margin-bottom: 30px;
+    box-shadow: 0 22px 70px rgba(2,6,23,0.32);
+}
+
+.admin-hero-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.admin-hero h2 {
+    font-size: 2.8rem;
+    margin-bottom: 10px;
+}
+
+.admin-hero p {
+    color: #94a3b8;
+    max-width: 780px;
+}
+
+.admin-badge {
+    display: inline-block;
+    margin-top: 18px;
+    padding: 9px 15px;
+    border-radius: 999px;
+    color: #22c55e;
+    background: rgba(34,197,94,0.14);
+    border: 1px solid rgba(34,197,94,0.38);
+    font-weight: 800;
+    font-size: 0.85rem;
+}
+
+.admin-hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px;
+    margin-bottom: 25px;
+}
+
+.admin-stat-card {
+    position: relative;
+    overflow: hidden;
+    padding: 22px;
+    border-radius: 23px;
+    background:
+        linear-gradient(135deg, rgba(56,189,248,0.12), transparent 45%),
+        rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    transition: 0.3s;
+}
+
+.admin-stat-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(56,189,248,0.45);
+    box-shadow: 0 18px 55px rgba(2,6,23,0.34);
+}
+
+.stat-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: rgba(56,189,248,0.14);
+    border: 1px solid rgba(56,189,248,0.35);
+    margin-bottom: 16px;
+}
+
+.admin-stat-card span {
+    color: #94a3b8;
+    font-size: 0.82rem;
+}
+
+.admin-stat-card h3 {
+    margin-top: 7px;
+    font-size: 1.75rem;
+    color: white;
+}
+
+.stat-subtext {
+    margin-top: 8px;
+    color: #64748b;
+    font-size: 0.78rem;
+}
+
+.insight-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 30px;
+}
+
+.insight-card {
+    padding: 20px;
+    border-radius: 22px;
+    background: rgba(15,23,42,0.72);
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.insight-card span {
+    color: #94a3b8;
+    font-size: 0.82rem;
+}
+
+.insight-card h3 {
+    margin-top: 8px;
+    color: #38bdf8;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: 1.45fr 0.8fr;
+    gap: 25px;
+    margin-bottom: 30px;
+}
+
+.admin-panel {
+    padding: 26px;
+    border-radius: 26px;
+    background:
+        linear-gradient(135deg, rgba(56,189,248,0.06), transparent 42%),
+        rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 30px;
+}
+
+.admin-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.admin-panel-header p {
+    color: #94a3b8;
+    margin-top: 6px;
+}
+
+.admin-search {
+    width: 260px;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: rgba(15,23,42,0.9);
+    color: white;
+    outline: none;
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 15px 12px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.admin-table th {
+    color: #94a3b8;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.admin-table td {
+    color: #e2e8f0;
+}
+
+.user-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: rgba(56,189,248,0.14);
+    border: 1px solid rgba(56,189,248,0.35);
+    color: #38bdf8;
+    font-weight: 900;
+}
+
+.user-meta strong {
+    display: block;
+    color: white;
+}
+
+.user-meta span {
+    color: #94a3b8;
+    font-size: 0.82rem;
+}
+
+.rank-pill,
+.role-pill,
+.status-pill,
+.log-action-pill {
+    display: inline-block;
+    padding: 7px 11px;
+    border-radius: 999px;
+    font-size: 0.76rem;
+    font-weight: 800;
+    white-space: nowrap;
+}
+
+.rank-pill {
+    color: #22c55e;
+    background: rgba(34,197,94,0.14);
+    border: 1px solid rgba(34,197,94,0.35);
+}
+
+.role-pill {
+    color: #38bdf8;
+    background: rgba(56,189,248,0.14);
+    border: 1px solid rgba(56,189,248,0.35);
+}
+
+.status-pill {
+    color: #a855f7;
+    background: rgba(168,85,247,0.14);
+    border: 1px solid rgba(168,85,247,0.35);
+}
+
+.log-action-pill {
+    color: #facc15;
+    background: rgba(250,204,21,0.12);
+    border: 1px solid rgba(250,204,21,0.35);
+}
+
+.admin-actions {
+    display: flex;
+    gap: 7px;
+    flex-wrap: nowrap;
+}
+
+.small-btn {
+    padding: 7px 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(56,189,248,0.35);
+    background: rgba(56,189,248,0.12);
+    color: #38bdf8;
+    cursor: pointer;
+    font-weight: 800;
+    font-size: 0.78rem;
+    transition: 0.25s;
+}
+
+.small-btn:hover {
+    transform: translateY(-2px);
+    background: rgba(56,189,248,0.2);
+}
+
+.small-btn.danger {
+    border-color: rgba(239,68,68,0.35);
+    background: rgba(239,68,68,0.12);
+    color: #ef4444;
+}
+
+.analytics-list,
+.audit-log-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.analytics-item,
+.audit-log-item {
+    padding: 15px;
+    border-radius: 16px;
+    background: rgba(15,23,42,0.75);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.analytics-top,
+.audit-log-top {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 9px;
+}
+
+.analytics-sub,
+.audit-log-sub {
+    color: #64748b;
+    font-size: 0.78rem;
+    margin-bottom: 10px;
+}
+
+.audit-log-details {
+    color: #94a3b8;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.analytics-bar {
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.08);
+    overflow: hidden;
+}
+
+.analytics-fill {
+    height: 100%;
+    width: 0%;
+    border-radius: 999px;
+    background: linear-gradient(90deg, #38bdf8, #22c55e);
+}
+
+.quick-actions {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+    margin-bottom: 30px;
+}
+
+.quick-action-card {
+    padding: 18px;
+    border-radius: 20px;
+    background: rgba(15,23,42,0.74);
+    border: 1px solid rgba(255,255,255,0.1);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.quick-action-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(56,189,248,0.45);
+}
+
+.quick-action-card strong {
+    display: block;
+    margin-bottom: 6px;
+}
+
+.quick-action-card span {
+    color: #94a3b8;
+    font-size: 0.82rem;
+}
+
+.activity-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.activity-item {
+    padding: 15px;
+    border-radius: 16px;
+    background: rgba(15,23,42,0.75);
+    border: 1px solid rgba(255,255,255,0.08);
+}
+
+.activity-item strong {
+    color: #38bdf8;
+}
+
+.activity-item p {
+    color: #94a3b8;
+    margin-top: 5px;
+    font-size: 0.9rem;
+}
+
+.health-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 10px;
+}
+
+.health-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #22c55e;
+    font-weight: 800;
+}
+
+.health-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #22c55e;
+    box-shadow: 0 0 14px rgba(34,197,94,0.8);
+}
+
+/* =====================
+   Create User Modal
+===================== */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.82);
+    backdrop-filter: blur(10px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-box {
+    width: 100%;
+    max-width: 520px;
+    padding: 32px;
+    border-radius: 26px;
+    background:
+        linear-gradient(135deg, rgba(56,189,248,0.12), transparent 45%),
+        rgba(15,23,42,0.98);
+    border: 1px solid rgba(56,189,248,0.35);
+    box-shadow: 0 28px 90px rgba(0,0,0,0.55);
+}
+
+.modal-box h3 {
+    font-size: 1.6rem;
+    margin-bottom: 8px;
+    color: white;
+}
+
+.modal-box p {
+    color: #94a3b8;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.modal-box label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 7px;
+    color: #cbd5e1;
+    font-weight: 700;
+    font-size: 0.9rem;
+}
+
+.modal-box input,
+.modal-box select {
+    width: 100%;
+    padding: 13px 14px;
+    border-radius: 13px;
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(2,6,23,0.8);
+    color: white;
+    outline: none;
+}
+
+.modal-box input:focus,
+.modal-box select:focus {
+    border-color: rgba(56,189,248,0.65);
+    box-shadow: 0 0 0 3px rgba(56,189,248,0.12);
+}
+
+.modal-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+}
+
+#createUserMessage {
+    margin-top: 15px;
+    font-weight: 800;
+    color: #94a3b8;
+}
+
+@media(max-width: 1150px) {
+    .admin-stats {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .insight-grid,
+    .quick-actions {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .admin-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media(max-width: 760px) {
+    .admin-stats,
+    .insight-grid,
+    .quick-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .admin-panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .admin-search {
+        width: 100%;
+    }
+
+    .admin-table {
+        font-size: 0.85rem;
+    }
+
+    .admin-actions {
+        flex-wrap: wrap;
+    }
+
+    .admin-hero h2 {
+        font-size: 2rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="container navbar-content">
+        <div class="logo">
+            <span class="logo-glow">V</span>ulnLab
+        </div>
+
+        <div class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="profile.html">Profile</a>
+            <a href="leaderboard.html">Leaderboard</a>
+            <a href="index.html">Home</a>
+            <a href="#" id="logoutBtn" class="nav-btn">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<section class="features dashboard-page">
+    <div class="container admin-wrapper">
+
+        <div class="admin-hero">
+            <div class="admin-hero-top">
+                <div>
+                    <h2>Admin Control Center</h2>
+                    <p>
+                        Manage learners, monitor lab progress, track XP, review platform analytics, and oversee VulnLab activity.
+                    </p>
+
+                    <span class="admin-badge">
+                        Administrator Console
+                    </span>
+                </div>
+
+                <div class="admin-hero-actions">
+                    <a href="leaderboard.html" class="btn btn-primary">
+                        View Leaderboard
+                    </a>
+
+                    <a href="dashboard.html" class="btn btn-secondary">
+                        Back to Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-stats">
+            <div class="admin-stat-card">
+                <div class="stat-icon">👥</div>
+                <span>Total Users</span>
+                <h3 id="totalUsers">0</h3>
+                <p class="stat-subtext">Registered learners</p>
+            </div>
+
+            <div class="admin-stat-card">
+                <div class="stat-icon">🏆</div>
+                <span>Total Solves</span>
+                <h3 id="totalSolves">0</h3>
+                <p class="stat-subtext">Across all labs</p>
+            </div>
+
+            <div class="admin-stat-card">
+                <div class="stat-icon">⚡</div>
+                <span>Total XP</span>
+                <h3 id="totalXp">0</h3>
+                <p class="stat-subtext">Earned by users</p>
+            </div>
+
+            <div class="admin-stat-card">
+                <div class="stat-icon">🧪</div>
+                <span>Total Labs</span>
+                <h3>9</h3>
+                <p class="stat-subtext">Active challenges</p>
+            </div>
+
+            <div class="admin-stat-card">
+                <div class="stat-icon">🎖</div>
+                <span>Top Rank</span>
+                <h3 id="topRank">-</h3>
+                <p class="stat-subtext">Highest user tier</p>
+            </div>
+
+            <div class="admin-stat-card">
+                <div class="stat-icon">📈</div>
+                <span>Completion Rate</span>
+                <h3 id="completionRate">0%</h3>
+                <p class="stat-subtext">Platform average</p>
+            </div>
+        </div>
+
+        <div class="insight-grid">
+            <div class="insight-card">
+                <span>Top Learner</span>
+                <h3 id="topLearner">-</h3>
+            </div>
+
+            <div class="insight-card">
+                <span>Most Solved Lab</span>
+                <h3 id="mostSolvedLab">-</h3>
+            </div>
+
+            <div class="insight-card">
+                <span>Least Solved Lab</span>
+                <h3 id="leastSolvedLab">-</h3>
+            </div>
+
+            <div class="insight-card">
+                <span>Newest User</span>
+                <h3 id="newestUser">-</h3>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <div class="quick-action-card">
+                <strong>👤 Create Admin</strong>
+                <span>Prepare role-based access</span>
+            </div>
+
+            <div class="quick-action-card">
+                <strong>⚡ Grant XP</strong>
+                <span>Reward learner activity</span>
+            </div>
+
+            <div class="quick-action-card">
+                <strong>🔄 Reset Progress</strong>
+                <span>Clear lab completion</span>
+            </div>
+
+            <div class="quick-action-card">
+                <strong>📤 Export Users</strong>
+                <span>Download user reports</span>
+            </div>
+
+            <div class="quick-action-card" id="labMonitorQuickAction">
+                <strong>🧪 Lab Monitor</strong>
+                <span>Review lab activity</span>
+            </div>
+        </div>
+
+        <div class="admin-grid">
+            <div class="admin-panel">
+                <div class="admin-panel-header">
+                    <div>
+                        <h3>User Management</h3>
+                        <p>View learners, XP, rank, progress, and account status.</p>
+                    </div>
+
+                    <input
+                        type="text"
+                        id="userSearch"
+                        class="admin-search"
+                        placeholder="Search users..."
+                    >
+                </div>
+
+                <div style="overflow:auto;">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Role</th>
+                                <th>XP</th>
+                                <th>Solved</th>
+                                <th>Rank</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="usersTableBody">
+                            <tr>
+                                <td colspan="7">Loading users...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="admin-panel">
+                <div class="admin-panel-header">
+                    <div>
+                        <h3>Lab Analytics</h3>
+                        <p>Completion distribution by lab.</p>
+                    </div>
+                </div>
+
+                <div id="labAnalytics" class="analytics-list">
+                    Loading analytics...
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-panel" id="labMonitorSection">
+            <div class="admin-panel-header">
+                <div>
+                    <h3>Lab Monitor</h3>
+                    <p>Track every solved lab across all users.</p>
+                </div>
+            </div>
+
+            <div style="overflow:auto;">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Email</th>
+                            <th>Lab</th>
+                            <th>Solved Time</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="labMonitorTable">
+                        <tr>
+                            <td colspan="4">Loading monitor data...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="admin-grid">
+            <div class="admin-panel">
+                <div class="admin-panel-header">
+                    <div>
+                        <h3>Recent Activity</h3>
+                        <p>Latest platform progress events.</p>
+                    </div>
+                </div>
+
+                <div id="activityFeed" class="activity-feed">
+                    Loading activity...
+                </div>
+            </div>
+
+            <div class="admin-panel">
+                <div class="admin-panel-header">
+                    <div>
+                        <h3>Platform Health</h3>
+                        <p>System status overview.</p>
+                    </div>
+                </div>
+
+                <div class="analytics-list">
+                    <div class="analytics-item">
+                        <div class="health-row">
+                            <span>Backend API</span>
+                            <div class="health-status">
+                                <span class="health-dot"></span>
+                                Online
+                            </div>
+                        </div>
+
+                        <div class="analytics-bar">
+                            <div class="analytics-fill" style="width:100%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-item">
+                        <div class="health-row">
+                            <span>PostgreSQL</span>
+                            <div class="health-status">
+                                <span class="health-dot"></span>
+                                Connected
+                            </div>
+                        </div>
+
+                        <div class="analytics-bar">
+                            <div class="analytics-fill" style="width:100%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-item">
+                        <div class="health-row">
+                            <span>JWT Auth</span>
+                            <div class="health-status">
+                                <span class="health-dot"></span>
+                                Enabled
+                            </div>
+                        </div>
+
+                        <div class="analytics-bar">
+                            <div class="analytics-fill" style="width:100%;"></div>
+                        </div>
+                    </div>
+
+                    <div class="analytics-item">
+                        <div class="health-row">
+                            <span>Admin Controls</span>
+                            <div class="health-status">
+                                <span class="health-dot"></span>
+                                Ready
+                            </div>
+                        </div>
+
+                        <div class="analytics-bar">
+                            <div class="analytics-fill" style="width:100%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+                <div class="admin-panel">
+            <div class="admin-panel-header">
+                <div>
+                    <h3>Admin Audit Logs</h3>
+                    <p>Track important admin actions like XP grants, resets, edits, and deletions.</p>
+                </div>
+            </div>
+
+            <div id="adminLogs" class="audit-log-list">
+                Loading admin logs...
+            </div>
+        </div>
+
+    </div>
+</section>
+
+<!-- Create User/Admin Modal -->
+
+<div id="createUserModal" class="modal-overlay">
+
+    <div class="modal-box">
+
+        <h3>Create User / Admin</h3>
+
+        <p>
+            Create a new VulnLab account with role-based access.
+        </p>
+
+        <form id="createUserForm">
+
+            <label>Username</label>
+            <input
+                type="text"
+                id="createUsername"
+                placeholder="Enter username"
+                required
+            >
+
+            <label>Email</label>
+            <input
+                type="email"
+                id="createEmail"
+                placeholder="Enter email"
+                required
+            >
+
+            <label>Password</label>
+            <input
+                type="password"
+                id="createPassword"
+                placeholder="Enter password"
+                required
+            >
+
+            <label>Role</label>
+            <select id="createRole" required>
+                <option value="user">User</option>
+                <option value="admin">Admin</option>
+            </select>
+
+            <div class="modal-actions">
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Create Account
+                </button>
+
+                <button
+                    type="button"
+                    id="closeCreateUserModal"
+                    class="btn btn-secondary"
+                >
+                    Cancel
+                </button>
+
+            </div>
+
+            <p id="createUserMessage"></p>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/admin.js"></script>
+
+</body>
+</html>

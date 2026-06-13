@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSRF Lab | VulnLab</title>
+<link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="container navbar-content">
+        <div class="logo"><span class="logo-glow">V</span>ulnLab</div>
+        <div class="nav-links">
+
+    <a href="../dashboard.html">
+        Dashboard
+    </a>
+
+    <a href="../profile.html">
+        Profile
+    </a>
+
+    <a href="../leaderboard.html">
+        Leaderboard
+    </a>
+
+    <a href="../index.html">
+        Home
+    </a>
+
+</div>
+    </div>
+</nav>
+
+<section class="features">
+<div class="container">
+
+    <div class="section-title">
+        <h2>CSRF Lab — Emergency Contact Takeover</h2>
+        <p>Objective: Change Alex's emergency contact to <strong>9999999999</strong> using a forged request.</p>
+    </div>
+
+    <div class="features-grid">
+        <div class="feature-card">
+            <div class="feature-icon">01</div>
+            <h3>Step 1</h3>
+            <p>Use the normal update form and inspect the request in DevTools → Network.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">02</div>
+            <h3>Step 2</h3>
+            <p>Check whether the request contains any CSRF token or unpredictable value.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">03</div>
+            <h3>Step 3</h3>
+            <p>Create attacker HTML that submits the same request with the target number.</p>
+        </div>
+    </div>
+
+    <br><br>
+
+    <div class="feature-card">
+        <h3>Victim Portal — Normal Contact Update</h3>
+
+        <p style="color:#94a3b8;margin-bottom:15px;">
+            First, update the contact normally and inspect the request.
+        </p>
+
+        <form id="contactForm">
+            <input
+                id="contactInput"
+                type="text"
+                placeholder="Enter emergency contact"
+                value="1111111111"
+                required
+                style="width:100%;max-width:500px;padding:14px;border-radius:12px;margin-bottom:15px;"
+            >
+
+            <button class="btn btn-primary">
+                Update Contact
+            </button>
+        </form>
+
+        <p id="normalMessage" style="margin-top:18px;font-weight:600;"></p>
+
+        <br>
+
+        <h3>Current Profile</h3>
+
+        <pre id="profileOutput" style="background:#0f172a;padding:18px;border-radius:12px;overflow:auto;">Loading...</pre>
+    </div>
+
+    <br><br>
+
+    <div class="feature-card">
+        <h3>Observed Request</h3>
+
+        <p style="color:#94a3b8;margin-bottom:15px;">
+            After submitting the normal form, compare your Network tab with this request structure.
+        </p>
+
+        <pre style="background:#0f172a;padding:18px;border-radius:12px;overflow:auto;">
+POST /api/csrf/update-contact
+
+Content-Type: application/json
+
+{
+  "emergencyContact": "1111111111"
+}
+
+Observation:
+No CSRF token is required.
+        </pre>
+    </div>
+
+    <br><br>
+
+    <div class="feature-card">
+        <h3>Attacker Workspace</h3>
+
+        <p style="color:#94a3b8;margin-bottom:20px;">
+            Build malicious HTML that forces the contact update to <strong>9999999999</strong>.
+        </p>
+
+        <textarea
+            id="csrfPayload"
+            style="width:100%;height:230px;padding:15px;background:#0f172a;color:white;border-radius:12px;"
+            placeholder="Write your CSRF HTML payload here..."
+        ></textarea>
+
+        <br><br>
+
+        <button id="runAttack" class="btn btn-primary">
+            Run Attack
+        </button>
+
+        <p id="csrfMessage" style="margin-top:18px;font-weight:600;"></p>
+    </div>
+
+</div>
+</section>
+
+<script src="../js/config.js"></script>
+<script src="../js/csrf.js"></script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Injection Lab | VulnLab</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <div class="logo">
+                <span class="logo-glow">V</span>ulnLab
+            </div>
+
+            <div class="nav-links">
+
+                <a href="../dashboard.html">Dashboard</a>
+
+                <a href="../profile.html">Profile</a>
+
+                <a href="../leaderboard.html">Leaderboard</a>
+
+                <a href="../index.html">Home</a>
+
+            </div>
+        </div>
+    </nav>
+
+    <section class="features">
+        <div class="container">
+
+            <div class="section-title">
+                <h2>SQL Injection Lab 1</h2>
+                <p>Objective: Bypass authentication by analyzing how user input affects database queries.</p>
+            </div>
+
+            <div class="features-grid">
+
+                <div class="feature-card">
+                    <div class="feature-icon">01</div>
+                    <h3>Lab Scenario</h3>
+                    <p>
+                        This login form contains an authentication weakness.
+                        Your task is to bypass login without knowing the real password.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">02</div>
+                    <h3>Hint</h3>
+                    <p>
+                        The application may be directly inserting user input into a SQL query.
+                        Try testing special characters and observe how authentication behaves.
+                    </p>
+
+                    <br>
+
+                    <p>
+                        Research:
+                        <strong>SQL authentication bypass payloads</strong>
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">03</div>
+                    <h3>Secure Fix</h3>
+                    <p>
+                        Secure applications use parameterized queries instead of directly inserting user input into SQL.
+                    </p>
+                </div>
+
+            </div>
+
+            <br><br>
+
+            <div class="feature-card">
+                <h3>Vulnerable Login Form</h3>
+
+                <form id="sqliForm" class="auth-form">
+                    <input type="text" id="sqliEmail" placeholder="Email">
+                    <input type="text" id="sqliPassword" placeholder="Password">
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </form>
+
+                <p id="sqliMessage" class="form-message"></p>
+
+                <br>
+
+                <h3>Response Output</h3>
+                <pre id="sqliOutput" style="margin-top:15px; background:rgba(0,0,0,0.35); padding:20px; border-radius:14px; overflow:auto;"></pre>
+            </div>
+
+        </div>
+    </section>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/sqli.js"></script>
+</body>
+</html>

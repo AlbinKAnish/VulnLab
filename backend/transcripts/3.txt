@@ -1,0 +1,7 @@
+Customer:
+How do I update profile photo?
+
+Support:
+Go to account settings.
+
+Resolved.

@@ -1,0 +1,15 @@
+Employee File Portal
+
+Available documents:
+- welcome.txt
+- manual.txt
+
+Recent maintenance:
+
+Backup files moved to:
+/backups/
+
+Admin notes archived.
+
+Contact:
+support@vulnlab.local

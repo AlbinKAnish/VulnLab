@@ -1,0 +1,16 @@
+Customer: Hi support
+
+Support: Hello John, how can I help?
+
+Customer:
+I forgot my login password again.
+
+Support:
+No problem. I found your account:
+
+Email: john@test.com
+Temporary password: john@123
+
+Please reset after login.
+
+Ticket closed.

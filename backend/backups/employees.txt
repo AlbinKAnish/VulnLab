@@ -1,0 +1,8 @@
+Employee Records Backup
+
+alex | support | L1
+john | hr | L3
+emma | finance | L2
+
+Backup created:
+2026-05-10

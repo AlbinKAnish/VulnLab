@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSS Lab | VulnLab</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <div class="logo">
+                <span class="logo-glow">V</span>ulnLab
+            </div>
+
+            <div class="nav-links">
+
+    <a href="../dashboard.html">
+        Dashboard
+    </a>
+
+    <a href="../profile.html">
+        Profile
+    </a>
+
+    <a href="../leaderboard.html">
+        Leaderboard
+    </a>
+
+    <a href="../index.html">
+        Home
+    </a>
+
+</div>
+        </div>
+    </nav>
+
+    <section class="features">
+        <div class="container">
+
+            <div class="section-title">
+                <h2>Stored XSS Lab</h2>
+                <p>Objective: Inject JavaScript that executes when comments are displayed.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">01</div>
+                    <h3>Lab Scenario</h3>
+                    <p>
+                        This comment section stores user input and displays it back to visitors.
+                        Your task is to identify whether the input is rendered safely or unsafely.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">02</div>
+                    <h3>Hint</h3>
+                    <p>
+                        Try submitting HTML-like input and observe whether it is treated as text or rendered by the browser.
+                    </p>
+                    <br>
+                    <p>Research: <strong>Stored XSS payloads</strong></p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">03</div>
+                    <h3>Secure Fix</h3>
+                    <p>
+                        Secure applications encode output before rendering user-controlled content in the browser.
+                    </p>
+                </div>
+            </div>
+
+            <br><br>
+
+            <div class="feature-card">
+                <h3>Vulnerable Comment Box</h3>
+
+                <form id="xssForm" class="auth-form">
+                    <input type="text" id="xssName" placeholder="Name">
+                    <input type="text" id="xssComment" placeholder="Comment">
+                    <button type="submit" class="btn btn-primary">Post Comment</button>
+                </form>
+
+                <p id="xssMessage" class="form-message"></p>
+
+                <br>
+
+                <h3>Stored Comments</h3>
+                <div id="commentsBox" style="margin-top:15px;"></div>
+            </div>
+
+        </div>
+    </section>
+
+    <script src="../js/config.js"></script>
+    <script src="../js/xss.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+Welcome Employee
+
+Recent deployment changes:
+
+Internal backups are now stored
+outside the public files directory.
+
+Reference:
+backups/admin-notes.txt
+
+Do not expose these files.

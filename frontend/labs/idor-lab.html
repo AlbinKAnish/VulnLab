@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>IDOR Lab | VulnLab</title>
+
+<link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="container navbar-content">
+        <div class="logo">
+            <span class="logo-glow">V</span>ulnLab
+        </div>
+
+        <div class="nav-links">
+            <a href="../dashboard.html">Dashboard</a>
+            <a href="../profile.html">Profile</a>
+            <a href="../leaderboard.html">Leaderboard</a>
+            <a href="../index.html">Home</a>
+        </div>
+    </div>
+</nav>
+
+<section class="features">
+    <div class="container">
+
+        <div class="section-title">
+            <h2>IDOR Lab — Exposed Chat Logs</h2>
+            <p>
+                Objective: Find another user's credentials through exposed transcripts.
+            </p>
+        </div>
+
+        <div class="features-grid">
+
+            <div class="feature-card">
+                <div class="feature-icon">01</div>
+
+                <h3>Scenario</h3>
+
+                <p>
+                    Support chat transcripts are stored as static files.
+                    Users can access transcripts using predictable URLs.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">02</div>
+
+                <h3>Hint</h3>
+
+                <p>
+                    Observe URLs carefully. Notice whether identifiers follow a predictable pattern.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">03</div>
+
+                <h3>Goal</h3>
+
+                <p>
+                    Find John's password from exposed transcripts and login as John.
+                </p>
+
+                <br>
+
+                <a href="../login.html" class="btn btn-primary">
+                    Open Login Page
+                </a>
+            </div>
+
+        </div>
+
+        <br><br>
+
+        <div class="feature-card">
+
+            <h3>Live Support Chat</h3>
+
+            <p style="margin-bottom:20px;color:#94a3b8;">
+                Conversation with Support
+            </p>
+
+            <input
+                type="text"
+                disabled
+                value="How can I reset my password?"
+                style="
+                width:100%;
+                max-width:500px;
+                padding:14px;
+                border-radius:12px;
+                background:rgba(255,255,255,0.06);
+                border:1px solid rgba(255,255,255,0.1);
+                color:white;
+                font-size:16px;
+                margin-bottom:20px;
+                "
+            />
+
+            <br>
+
+            <button class="btn btn-primary" id="viewTranscript">
+                View Transcript
+            </button>
+
+            <br><br>
+
+            <p>
+                Transcript URL:
+            </p>
+
+            <code
+                id="transcriptLink"
+                title="Click to change transcript filename"
+                style="
+                display:block;
+                margin-top:10px;
+                padding:12px;
+                background:rgba(0,0,0,.3);
+                border-radius:10px;
+                overflow:auto;
+                cursor:pointer;
+                "
+            >
+                http://localhost:5000/api/idor/chat/3.txt
+            </code>
+
+            <p style="margin-top:12px;color:#94a3b8;font-size:0.9rem;">
+                Tip: Click the transcript URL and try changing the transcript number.
+            </p>
+
+        </div>
+
+    </div>
+</section>
+
+<script src="../js/config.js"></script>
+
+<script>
+
+const transcriptButton =
+document.getElementById("viewTranscript");
+
+const transcriptLink =
+document.getElementById("transcriptLink");
+
+let currentTranscript =
+"3.txt";
+
+async function saveProgress(labKey) {
+    try {
+        await fetch(`${API_BASE_URL}/api/progress/solve`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            },
+            body: JSON.stringify({
+                labKey: labKey
+            })
+        });
+    } catch (err) {
+        console.error(
+            "Progress save failed:",
+            err
+        );
+    }
+}
+
+async function openTranscript(filename) {
+    const transcriptUrl =
+    `${API_BASE_URL}/api/idor/chat/${filename}`;
+
+    window.open(
+        transcriptUrl,
+        "_blank"
+    );
+
+    transcriptLink.textContent =
+    transcriptUrl;
+
+    currentTranscript =
+    filename;
+
+    if (filename === "1.txt") {
+        await saveProgress("lab_idor");
+
+        alert(
+            "IDOR lab solved! You found the exposed sensitive transcript."
+        );
+    }
+}
+
+transcriptButton.addEventListener("click", async () => {
+    await openTranscript(currentTranscript);
+});
+
+transcriptLink.addEventListener("click", async () => {
+    const filename =
+    prompt(
+        "Enter transcript filename:",
+        currentTranscript
+    );
+
+    if (!filename) {
+        return;
+    }
+
+    await openTranscript(
+        filename.trim()
+    );
+});
+
+</script>
+
+</body>
+</html>

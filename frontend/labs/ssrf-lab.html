@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SSRF Lab | VulnLab</title>
+
+<link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="container navbar-content">
+        <div class="logo">
+            <span class="logo-glow">V</span>ulnLab
+        </div>
+
+        <div class="nav-links">
+
+    <a href="../dashboard.html">
+        Dashboard
+    </a>
+
+    <a href="../profile.html">
+        Profile
+    </a>
+
+    <a href="../leaderboard.html">
+        Leaderboard
+    </a>
+
+    <a href="../index.html">
+        Home
+    </a>
+
+</div>
+    </div>
+</nav>
+
+<section class="features">
+    <div class="container">
+
+        <div class="section-title">
+            <h2>SSRF Lab — Internal URL Fetcher</h2>
+            <p>
+                Objective: Abuse the server-side fetcher to retrieve an internal admin API key.
+            </p>
+        </div>
+
+        <div class="features-grid">
+
+            <div class="feature-card">
+                <div class="feature-icon">01</div>
+                <h3>Scenario</h3>
+                <p>
+                    Employees can submit URLs for the server to preview.
+                    Investigate whether internal services can be accessed through the fetcher.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">02</div>
+                <h3>Hint</h3>
+                <p>
+                    Try a normal public URL first. Then think about what services the server itself can reach.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">03</div>
+                <h3>Goal</h3>
+                <p>
+                    Retrieve the internal API key from the admin-only service.
+                </p>
+            </div>
+
+        </div>
+
+        <br><br>
+
+        <div class="feature-card">
+            <h3>URL Preview Tool</h3>
+
+            <p style="color:#94a3b8;margin:15px 0;">
+                Enter a URL for the backend server to fetch.
+            </p>
+
+            <form id="ssrfForm" class="auth-form">
+                <input
+                    type="text"
+                    id="urlInput"
+                    placeholder="Example: http://example.com"
+                    value="http://example.com"
+                >
+
+                <button type="submit" class="btn btn-primary">
+                    Fetch URL
+                </button>
+            </form>
+
+            <p id="ssrfMessage" class="form-message"></p>
+
+            <br>
+
+            <h3>Server Response</h3>
+
+            <pre
+                id="ssrfOutput"
+                style="
+                margin-top:15px;
+                background:rgba(0,0,0,0.35);
+                padding:20px;
+                border-radius:14px;
+                overflow:auto;
+                min-height:160px;
+                "
+            >Waiting...</pre>
+        </div>
+
+        <br><br>
+
+        <div class="feature-card">
+            <h3>Developer Notes</h3>
+
+            <p style="color:#94a3b8;margin:15px 0;">
+                Internal routing notes found in a debug comment.
+            </p>
+
+            <pre
+                style="
+                background:#0f172a;
+                padding:18px;
+                border-radius:12px;
+                overflow:auto;
+                "
+            >
+Internal admin service runs locally.
+
+Route:
+
+GET /api/ssrf/internal/admin
+
+Do not expose this endpoint externally.
+            </pre>
+        </div>
+
+    </div>
+</section>
+
+<script src="../js/config.js"></script>
+<script src="../js/ssrf.js"></script>
+</body>
+</html>

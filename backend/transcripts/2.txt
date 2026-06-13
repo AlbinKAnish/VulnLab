@@ -1,0 +1,6 @@
+Customer: Payment issue
+
+Support:
+Please clear browser cache and retry.
+
+Resolved.

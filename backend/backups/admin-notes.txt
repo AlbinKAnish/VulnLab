@@ -1,0 +1,16 @@
+Admin Notes
+
+Temporary admin account created
+for maintenance.
+
+Username:
+admin@vulnlab.local
+
+Password:
+Admin@2026!
+
+Reminder:
+Move credentials to vault after deployment.
+
+Status:
+PENDING

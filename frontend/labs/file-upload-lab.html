@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>File Upload Lab | VulnLab</title>
+
+<link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<nav class="navbar">
+    <div class="container navbar-content">
+        <div class="logo">
+            <span class="logo-glow">V</span>ulnLab
+        </div>
+
+        <div class="nav-links">
+
+    <a href="../dashboard.html">
+        Dashboard
+    </a>
+
+    <a href="../profile.html">
+        Profile
+    </a>
+
+    <a href="../leaderboard.html">
+        Leaderboard
+    </a>
+
+    <a href="../index.html">
+        Home
+    </a>
+
+</div>
+    </div>
+</nav>
+
+<section class="features">
+    <div class="container">
+
+        <div class="section-title">
+            <h2>File Upload Lab — Unrestricted Upload</h2>
+            <p>
+                Objective: Upload a dangerous file type and prove the server stores it publicly.
+            </p>
+        </div>
+
+        <div class="features-grid">
+
+            <div class="feature-card">
+                <div class="feature-icon">01</div>
+                <h3>Scenario</h3>
+                <p>
+                    Employees can upload profile pictures.
+                    The application claims only image files should be uploaded.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">02</div>
+                <h3>Hint</h3>
+                <p>
+                    Check whether the server validates file content or simply accepts whatever file is submitted.
+                </p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon">03</div>
+                <h3>Goal</h3>
+                <p>
+                    Upload <strong>payload.php</strong> and access it from the public uploads path.
+                </p>
+            </div>
+
+        </div>
+
+        <br><br>
+
+        <div class="feature-card">
+            <h3>Employee Avatar Upload</h3>
+
+            <p style="color:#94a3b8;margin:15px 0;">
+                Allowed file types shown to users: .jpg, .png
+            </p>
+
+            <p style="color:#94a3b8;margin-bottom:15px;">
+                For this lab, download the test payload and try uploading it even though it is not an image.
+            </p>
+
+            <a
+                href="../files/payload.php"
+                download
+                class="btn btn-secondary"
+                style="text-decoration:none;margin-bottom:18px;display:inline-block;"
+            >
+                Download Test Payload
+            </a>
+
+            <div class="auth-form">
+                <input
+                    type="file"
+                    id="avatarFile"
+                    name="avatar"
+                    required
+                >
+
+                <button type="button" class="btn btn-primary" id="uploadBtn">
+                    Upload File
+                </button>
+            </div>
+
+            <p id="uploadMessage" class="form-message"></p>
+
+            <br>
+
+            <h3>Upload Response</h3>
+
+            <pre
+                id="uploadOutput"
+                style="
+                margin-top:15px;
+                background:rgba(0,0,0,0.35);
+                padding:20px;
+                border-radius:14px;
+                overflow:auto;
+                min-height:140px;
+                "
+            >Waiting...</pre>
+        </div>
+
+        <br><br>
+
+        <div class="feature-card">
+            <h3>Developer Notes</h3>
+
+            <pre
+                style="
+                background:#0f172a;
+                padding:18px;
+                border-radius:12px;
+                overflow:auto;
+                "
+            >
+Uploaded files are stored publicly.
+
+Upload endpoint:
+
+POST /api/upload/upload
+
+Public file path:
+
+/api/upload/files/{filename}
+
+Example uploaded file:
+
+/api/upload/files/payload.php
+
+Internal upload service currently trusts client-side validation only.
+            </pre>
+        </div>
+
+    </div>
+</section>
+
+<script src="../js/config.js"></script>
+<script src="../js/fileUpload.js"></script>
+</body>
+</html>

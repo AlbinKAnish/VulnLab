@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | VulnLab</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="container navbar-content">
+
+            <div class="logo">
+                <span class="logo-glow">V</span>ulnLab
+            </div>
+
+            <div class="nav-links">
+
+                <a href="index.html">
+                    Home
+                </a>
+
+                <a href="profile.html">
+                    Profile
+                </a>
+
+                <a href="leaderboard.html">
+                    Leaderboard
+                </a>
+
+                <a href="#" id="logoutBtn" class="nav-btn">
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+    </nav>
+
+    <section class="features dashboard-page">
+        <div class="container">
+
+            <div class="section-title">
+                <h2>Welcome to VulnLab</h2>
+
+                <p id="welcomeMessage">
+                    Loading user...
+                </p>
+            </div>
+
+            <div class="progress-box">
+
+                <div class="progress-text" id="progressText">
+                    Completed: 0/9 Labs
+                </div>
+
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+            </div>
+
+            <div class="features-grid dashboard-grid">
+
+                <div class="feature-card lab-card">
+                    <div class="feature-icon">01</div>
+
+                    <h3>SQL Injection</h3>
+
+                    <p>
+                        Practice authentication bypass and vulnerable SQL queries.
+                    </p>
+
+                    <span class="solved-badge" id="badge_sqli">
+                        ✓ Solved
+                    </span>
+
+                    <a href="labs/sqli-lab.html" class="btn btn-primary">
+                        Open Lab
+                    </a>
+                </div>
+
+                <div class="feature-card lab-card">
+                    <div class="feature-icon">02</div>
+
+                    <h3>Stored XSS</h3>
+
+                    <p>
+                        Practice stored cross-site scripting through unsafe comment rendering.
+                    </p>
+
+                    <span class="solved-badge" id="badge_xss">
+                        ✓ Solved
+                    </span>
+
+                    <a href="labs/xss-lab.html" class="btn btn-primary">
+                        Open Lab
+                    </a>
+                </div>
+
+                <div class="feature-card lab-card">
+                    <div class="feature-icon">03</div>
+
+                    <h3>IDOR</h3>
+
+                    <p>
+                        Exploit exposed support transcripts to steal credentials through predictable file paths.
+                    </p>
+
+                    <span class="solved-badge" id="badge_idor">
+                        ✓ Solved
+                    </span>
+
+                    <a href="labs/idor-lab.html" class="btn btn-primary">
+                        Open Lab
+                    </a>
+                </div>
+
+                <div class="feature-card lab-card">
+                    <div class="feature-icon">04</div>
+
+                    <h3>JWT Privilege Escalation</h3>
+
+                    <p>
+                        Analyze employee JWT tokens, tamper claims, and escalate access to restricted payroll systems.
+                    </p>
+
+                    <span class="solved-badge" id="badge_jwt">
+                        ✓ Solved
+                    </span>
+
+                    <a href="labs/jwt-lab.html" class="btn btn-primary">
+                        Open Lab
+                    </a>
+                </div>
+
+                <div class="feature-card lab-card">
+                    <div class="feature-icon">05</div>
+
+                    <h3>Path Traversal</h3>
+
+                    <p>
+                        Escape download directories and retrieve sensitive backups.
+                    </p>
+
+                    <span class="solved-badge" id="badge_path">
+                        ✓ Solved
+                    </span>
+
+                    <a href="labs/path-traversal-lab.html" class="btn btn-primary">
+                        Open Lab
+                    </a>
+                </div>
+
+                <div class="feature-card lab-card">
+                    <div class="feature-icon">06</div>
+
+                    <h3>CSRF</h3>
+
+                    <p>
+                        Exploit missing CSRF protection to force an emergency contact update.
+                    </p>
+
+                    <span class="solved-badge" id="badge_csrf">
+                        ✓ Solved
+                    </span>
+
+                    <a href="labs/csrf-lab.html" class="btn btn-primary">
+                        Open Lab
+                    </a>
+                </div>
+
+                <div class="feature-card lab-card">
+                    <div class="feature-icon">07</div>
+
+                    <h3>Command Injection</h3>
+
+                    <p>
+                        Abuse an internal ping utility to execute system commands and read sensitive files.
+                    </p>
+
+                    <span class="solved-badge" id="badge_cmdi">
+                        ✓ Solved
+                    </span>
+
+                    <a href="labs/cmdi-lab.html" class="btn btn-primary">
+                        Open Lab
+                    </a>
+                </div>
+
+                <div class="feature-card lab-card">
+                    <div class="feature-icon">08</div>
+
+                    <h3>SSRF</h3>
+
+                    <p>
+                        Abuse a server-side URL fetcher to access internal admin services and leak API keys.
+                    </p>
+
+                    <span class="solved-badge" id="badge_ssrf">
+                        ✓ Solved
+                    </span>
+
+                    <a href="labs/ssrf-lab.html" class="btn btn-primary">
+                        Open Lab
+                    </a>
+                </div>
+
+                <div class="feature-card lab-card">
+                    <div class="feature-icon">09</div>
+
+                    <h3>File Upload</h3>
+
+                    <p>
+                        Abuse weak upload validation to upload dangerous file types and expose them publicly.
+                    </p>
+
+                    <span class="solved-badge" id="badge_upload">
+                        ✓ Solved
+                    </span>
+
+                    <a href="labs/file-upload-lab.html" class="btn btn-primary">
+                        Open Lab
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <script src="js/config.js"></script>
+
+    <script>
+        const token = localStorage.getItem("token");
+
+        const user =
+        JSON.parse(
+            localStorage.getItem("user")
+        );
+
+        if (!token || !user) {
+            window.location.href = "login.html";
+        }
+
+        document.getElementById("welcomeMessage").textContent =
+            `Logged in as ${user.username} (${user.email})`;
+
+        document.getElementById("logoutBtn")
+        .addEventListener("click", () => {
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+
+            window.location.href = "login.html";
+        });
+
+        const labs = [
+            { key: "lab_sqli", badge: "badge_sqli" },
+            { key: "lab_xss", badge: "badge_xss" },
+            { key: "lab_idor", badge: "badge_idor" },
+            { key: "lab_jwt", badge: "badge_jwt" },
+            { key: "lab_path", badge: "badge_path" },
+            { key: "lab_csrf", badge: "badge_csrf" },
+            { key: "lab_cmdi", badge: "badge_cmdi" },
+            { key: "lab_ssrf", badge: "badge_ssrf" },
+            { key: "lab_upload", badge: "badge_upload" }
+        ];
+
+        async function loadProgressFromDatabase() {
+
+            try {
+
+                const response =
+                await fetch(
+                    `${API_BASE_URL}/api/progress`,
+                    {
+                        method: "GET",
+
+                        headers: {
+                            "Authorization":
+                            `Bearer ${token}`
+                        }
+                    }
+                );
+
+                const data =
+                await response.json();
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        data.message ||
+                        "Unable to load progress"
+                    );
+
+                }
+
+                const solvedLabs =
+                data.progress.map(
+                    item => item.lab_key
+                );
+
+                let completed = 0;
+
+                labs.forEach((lab) => {
+
+                    const badgeElement =
+                    document.getElementById(
+                        lab.badge
+                    );
+
+                    if (
+                        solvedLabs.includes(lab.key)
+                    ) {
+
+                        completed++;
+
+                        badgeElement.style.display =
+                        "inline-block";
+
+                    }
+
+                    else {
+
+                        badgeElement.style.display =
+                        "none";
+
+                    }
+
+                });
+
+                const totalLabs =
+                labs.length;
+
+                const percentage =
+                Math.round(
+                    (completed / totalLabs) * 100
+                );
+
+                document.getElementById("progressText")
+                .textContent =
+                `Completed: ${completed}/${totalLabs} Labs (${percentage}%)`;
+
+                document.getElementById("progressFill")
+                .style.width =
+                `${percentage}%`;
+
+            }
+
+            catch (err) {
+
+                console.error(
+                    "Progress load error:",
+                    err
+                );
+
+                document.getElementById("progressText")
+                .textContent =
+                "Unable to load progress";
+            }
+        }
+
+        loadProgressFromDatabase();
+    </script>
+
+</body>
+</html>
