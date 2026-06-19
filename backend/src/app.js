@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
+const path = require("path");
 const pool = require("./database/db");
 
 const authRoutes = require("./routes/authRoutes");
@@ -25,13 +26,22 @@ const app = express();
 // Middleware
 // =====================
 
-app.use(helmet());
+app.use(helmet({
+    contentSecurityPolicy: false
+}));
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // =====================
-// Routes
+// Frontend Static Files
+// =====================
+
+app.use(express.static(path.join(__dirname, "../../frontend")));
+
+// =====================
+// API Routes
 // =====================
 
 app.use("/api/auth", authRoutes);
@@ -51,11 +61,11 @@ app.use("/api/ssrf", ssrfLabRoutes);
 app.use("/api/upload", fileUploadLabRoutes);
 
 // =====================
-// Test Route
+// Frontend Entry Route
 // =====================
 
 app.get("/", (req, res) => {
-    res.send("VulnLab Backend Running 🚀");
+    res.sendFile(path.join(__dirname, "../../frontend/index.html"));
 });
 
 // =====================
@@ -74,7 +84,7 @@ pool.query("SELECT NOW()", (err, result) => {
 // Start Server
 // =====================
 
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);

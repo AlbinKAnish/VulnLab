@@ -1,0 +1,34 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: vulnlab-db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: vulnlab_password
+      POSTGRES_DB: vulnlab
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/src/database/schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    container_name: vulnlab-app
+    restart: always
+    depends_on:
+      - db
+    environment:
+      DB_USER: postgres
+      DB_HOST: db
+      DB_NAME: vulnlab
+      DB_PASSWORD: vulnlab_password
+      DB_PORT: 5432
+      JWT_SECRET: vulnlab_demo_secret_change_later
+      PORT: 5000
+    ports:
+      - "5000:5000"
+
+volumes:
+  postgres_data:
