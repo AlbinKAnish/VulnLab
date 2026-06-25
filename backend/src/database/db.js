@@ -7,6 +7,15 @@ const pool = new Pool({
     database: process.env.DB_NAME,
     password: process.env.DB_PASSWORD,
     port: process.env.DB_PORT,
+
+    // Required for Neon in production
+    ssl: process.env.NODE_ENV === "production"
+        ? { rejectUnauthorized: false }
+        : false
 });
+
+pool.connect()
+    .then(() => console.log("Database connected successfully"))
+    .catch(err => console.error("Database connection error:", err));
 
 module.exports = pool;
