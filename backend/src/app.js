@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
 const path = require("path");
+const fs = require("fs");
 const pool = require("./database/db");
 
 const authRoutes = require("./routes/authRoutes");
@@ -23,6 +24,25 @@ const fileUploadLabRoutes = require("./vulnerabilities/fileUploadLab");
 const app = express();
 
 // =====================
+// Basic Application Logging
+// =====================
+
+const logDir = path.join(__dirname, "../logs");
+
+if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir, { recursive: true });
+}
+
+function logEvent(message) {
+    const timestamp = new Date().toISOString();
+
+    fs.appendFileSync(
+        path.join(logDir, "app.log"),
+        `[${timestamp}] ${message}\n`
+    );
+}
+
+// =====================
 // Middleware
 // =====================
 
@@ -33,6 +53,11 @@ app.use(helmet({
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use((req, res, next) => {
+    logEvent(`${req.method} ${req.originalUrl} - IP: ${req.ip}`);
+    next();
+});
 
 // =====================
 // Frontend Static Files
