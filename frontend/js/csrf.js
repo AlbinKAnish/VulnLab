@@ -10,15 +10,13 @@ const csrfMessage = document.getElementById("csrfMessage");
 
 async function saveProgress(labKey) {
     try {
-        await fetch(${API_BASE_URL}/progress/solve`, {
+        await fetch(`${API_BASE_URL}/progress/solve`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${localStorage.getItem("token")}`
             },
-            body: JSON.stringify({
-                labKey: labKey
-            })
+            body: JSON.stringify({ labKey })
         });
     } catch (err) {
         console.error("Progress save failed:", err);
@@ -26,186 +24,108 @@ async function saveProgress(labKey) {
 }
 
 async function loadProfile() {
-
     try {
+        const response = await fetch(`${API_BASE_URL}/csrf/profile`);
 
-        const response =
-        await fetch(${API_BASE_URL}/csrf/profile`);
+        const data = await response.json();
 
-        const data =
-        await response.json();
-
-        profileOutput.textContent =
-        JSON.stringify(data, null, 2);
-
+        profileOutput.textContent = JSON.stringify(data, null, 2);
+    } catch (err) {
+        profileOutput.textContent = "Unable to load profile";
     }
-
-    catch (err) {
-
-        profileOutput.textContent =
-        "Unable to load profile";
-
-    }
-
 }
 
-contactForm.addEventListener("submit", async (e) => {
+if (contactForm) {
+    contactForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-    e.preventDefault();
+        normalMessage.style.color = "#38bdf8";
+        normalMessage.textContent = "Sending normal update request...";
 
-    normalMessage.style.color =
-    "#38bdf8";
+        try {
+            const response = await fetch(`${API_BASE_URL}/csrf/update-contact`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    emergencyContact: contactInput.value
+                })
+            });
 
-    normalMessage.textContent =
-    "Sending normal update request...";
+            const data = await response.json();
 
-    try {
+            profileOutput.textContent = JSON.stringify(data, null, 2);
 
-        const response =
-        await fetch(${API_BASE_URL}/csrf/update-contact`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                emergencyContact: contactInput.value
-            })
-        });
+            if (response.ok) {
+                normalMessage.style.color = "#22c55e";
+                normalMessage.textContent =
+                    "Contact updated. Now inspect the request in DevTools → Network.";
+            } else {
+                normalMessage.style.color = "#ef4444";
+                normalMessage.textContent = data.message || "Update failed";
+            }
+        } catch (err) {
+            normalMessage.style.color = "#ef4444";
+            normalMessage.textContent = "Unable to connect";
+        }
+    });
+}
 
-        const data =
-        await response.json();
+if (runAttack) {
+    runAttack.addEventListener("click", async () => {
+        const payload = csrfPayload.value.trim();
 
-        profileOutput.textContent =
-        JSON.stringify(data, null, 2);
-
-        if (response.ok) {
-
-            normalMessage.style.color =
-            "#22c55e";
-
-            normalMessage.textContent =
-            "Contact updated. Now inspect the request in DevTools → Network.";
-
+        if (!payload) {
+            csrfMessage.style.color = "#ef4444";
+            csrfMessage.textContent = "Write a CSRF payload first.";
+            return;
         }
 
-        else {
-
-            normalMessage.style.color =
-            "#ef4444";
-
-            normalMessage.textContent =
-            data.message || "Update failed";
-
-        }
-
-    }
-
-    catch (err) {
-
-        normalMessage.style.color =
-        "#ef4444";
-
-        normalMessage.textContent =
-        "Unable to connect";
-
-    }
-
-});
-
-runAttack.addEventListener("click", async () => {
-
-    const payload =
-    csrfPayload.value.trim();
-
-    if (!payload) {
-
-        csrfMessage.style.color =
-        "#ef4444";
-
-        csrfMessage.textContent =
-        "Write a CSRF payload first.";
-
-        return;
-
-    }
-
-    if (
-        !payload.includes("form") ||
-        !payload.includes("update-contact") ||
-        !payload.includes("9999999999")
-    ) {
-
-        csrfMessage.style.color =
-        "#ef4444";
-
-        csrfMessage.textContent =
-        "Payload incomplete. It should submit the update-contact request with 9999999999.";
-
-        return;
-
-    }
-
-    csrfMessage.style.color =
-    "#38bdf8";
-
-    csrfMessage.textContent =
-    "Executing forged request...";
-
-    try {
-
-        const response =
-        await fetch(${API_BASE_URL}/csrf/update-contact`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                emergencyContact: "9999999999"
-            })
-        });
-
-        const data =
-        await response.json();
-
-        profileOutput.textContent =
-        JSON.stringify(data, null, 2);
-
-        if (response.ok) {
-
-            await saveProgress(
-                "lab_csrf"
-            );
-
-            csrfMessage.style.color =
-            "#22c55e";
-
+        if (
+            !payload.includes("form") ||
+            !payload.includes("update-contact") ||
+            !payload.includes("9999999999")
+        ) {
+            csrfMessage.style.color = "#ef4444";
             csrfMessage.textContent =
-            "CSRF attack successful. Emergency contact changed.";
-
+                "Payload incomplete. It should submit the update-contact request with 9999999999.";
+            return;
         }
 
-        else {
+        csrfMessage.style.color = "#38bdf8";
+        csrfMessage.textContent = "Executing forged request...";
 
-            csrfMessage.style.color =
-            "#ef4444";
+        try {
+            const response = await fetch(`${API_BASE_URL}/csrf/update-contact`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    emergencyContact: "9999999999"
+                })
+            });
 
-            csrfMessage.textContent =
-            data.message || "Attack failed";
+            const data = await response.json();
 
+            profileOutput.textContent = JSON.stringify(data, null, 2);
+
+            if (response.ok) {
+                await saveProgress("lab_csrf");
+
+                csrfMessage.style.color = "#22c55e";
+                csrfMessage.textContent =
+                    "CSRF attack successful. Emergency contact changed.";
+            } else {
+                csrfMessage.style.color = "#ef4444";
+                csrfMessage.textContent = data.message || "Attack failed";
+            }
+        } catch (err) {
+            csrfMessage.style.color = "#ef4444";
+            csrfMessage.textContent = "Unable to execute attack.";
         }
-
-    }
-
-    catch (err) {
-
-        csrfMessage.style.color =
-        "#ef4444";
-
-        csrfMessage.textContent =
-        "Unable to execute attack.";
-
-    }
-
-});
+    });
+}
 
 loadProfile();

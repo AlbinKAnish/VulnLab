@@ -3,7 +3,7 @@ const commentsBox = document.getElementById("commentsBox");
 
 async function saveProgress(labKey) {
     try {
-        await fetch(${API_BASE_URL}/progress/solve`, {
+        await fetch(`${API_BASE_URL}/progress/solve`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -19,177 +19,80 @@ async function saveProgress(labKey) {
 }
 
 async function loadComments() {
-
     try {
+        const response = await fetch(`${API_BASE_URL}/xss/comments`);
 
-        const response = await fetch(
-            ${API_BASE_URL}/xss/comments`
-        );
-
-        const data =
-        await response.json();
+        const data = await response.json();
 
         commentsBox.innerHTML = "";
 
         data.comments.forEach((item) => {
+            const commentCard = document.createElement("div");
 
-            const commentCard =
-            document.createElement("div");
+            commentCard.style.marginBottom = "15px";
+            commentCard.style.padding = "18px";
+            commentCard.style.borderRadius = "14px";
+            commentCard.style.background = "rgba(255,255,255,0.06)";
+            commentCard.style.border = "1px solid rgba(255,255,255,0.1)";
 
-            commentCard.style.marginBottom =
-            "15px";
-
-            commentCard.style.padding =
-            "18px";
-
-            commentCard.style.borderRadius =
-            "14px";
-
-            commentCard.style.background =
-            "rgba(255,255,255,0.06)";
-
-            commentCard.style.border =
-            "1px solid rgba(255,255,255,0.1)";
-
-            // vulnerable rendering
-
+            // intentionally vulnerable rendering for XSS lab
             commentCard.innerHTML = `
                 <strong>${item.name}</strong>
                 <p>${item.comment}</p>
             `;
 
-            commentsBox.appendChild(
-                commentCard
-            );
-
+            commentsBox.appendChild(commentCard);
         });
 
-    }
-
-    catch(error){
-
-        commentsBox.innerHTML =
-        "Unable to load comments";
-
+    } catch (error) {
+        commentsBox.innerHTML = "Unable to load comments";
     }
 }
 
+if (xssForm) {
+    xssForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
+        const name = document.getElementById("xssName").value;
+        const comment = document.getElementById("xssComment").value;
+        const message = document.getElementById("xssMessage");
 
-if(xssForm){
+        try {
+            const response = await fetch(`${API_BASE_URL}/xss/comment`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name,
+                    comment
+                })
+            });
 
-xssForm.addEventListener(
+            if (response.ok) {
+                if (
+                    comment.includes("onerror") ||
+                    comment.includes("<script")
+                ) {
+                    await saveProgress("lab_xss");
+                }
 
-"submit",
+                message.style.color = "#22c55e";
+                message.textContent = "Comment posted successfully";
 
-async(e)=>{
+                xssForm.reset();
 
-e.preventDefault();
+                loadComments();
+            } else {
+                message.style.color = "#ef4444";
+                message.textContent = "Failed to post comment";
+            }
 
-const name =
-document.getElementById(
-"xssName"
-).value;
-
-const comment =
-document.getElementById(
-"xssComment"
-).value;
-
-const message =
-document.getElementById(
-"xssMessage"
-);
-
-try{
-
-const response =
-await fetch(
-
-${API_BASE_URL}/xss/comment`,
-
-{
-method:"POST",
-
-headers:{
-"Content-Type":
-"application/json"
-},
-
-body:
-JSON.stringify({
-name,
-comment
-})
-
+        } catch (error) {
+            message.style.color = "#ef4444";
+            message.textContent = "Unable to connect";
+        }
+    });
 }
-
-);
-
-
-
-if(response.ok){
-
-if(
-
-comment.includes(
-"onerror"
-)
-
-||
-
-comment.includes(
-"<script"
-)
-
-){
-
-await saveProgress(
-"lab_xss"
-);
-
-}
-
-
-
-message.style.color =
-"#22c55e";
-
-message.textContent =
-"Comment posted successfully";
-
-xssForm.reset();
-
-loadComments();
-
-}
-
-else{
-
-message.style.color =
-"#ef4444";
-
-message.textContent =
-"Failed to post comment";
-
-}
-
-}
-
-catch(error){
-
-message.style.color =
-"#ef4444";
-
-message.textContent =
-"Unable to connect";
-
-}
-
-});
-
-}
-
-
 
 loadComments();

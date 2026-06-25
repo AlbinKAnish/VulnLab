@@ -2,7 +2,7 @@ const downloadForm = document.getElementById("downloadForm");
 
 async function saveProgress(labKey) {
     try {
-        await fetch(${API_BASE_URL}/progress/solve`, {
+        await fetch(`${API_BASE_URL}/progress/solve`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -30,7 +30,7 @@ downloadForm.addEventListener("submit", async (e) => {
 
     try {
         const response = await fetch(
-            ${API_BASE_URL}/files/download?file=${filename}`
+            `${API_BASE_URL}/files/download?file=${filename}`
         );
 
         const data = await response.text();
@@ -42,20 +42,20 @@ downloadForm.addEventListener("submit", async (e) => {
             if (
                 filename.includes("../backups/admin-notes.txt")
             ) {
-                await saveProgress(
-                    "lab_path"
-                );
+                await saveProgress("lab_path");
             }
 
             message.style.color = "#22c55e";
             message.textContent = "File retrieved successfully.";
 
         } else {
+
             message.style.color = "#ef4444";
             message.textContent = "File not found or access failed.";
         }
 
     } catch (err) {
+
         message.style.color = "#ef4444";
         message.textContent = "Unable to connect to server.";
         output.textContent = err.message;

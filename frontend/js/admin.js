@@ -5,22 +5,24 @@ if (!token || !currentUser) {
     window.location.href = "login.html";
 }
 
-const currentUserRole =
-currentUser.role
-? currentUser.role.toLowerCase().trim()
-: "";
+const currentUserRole = currentUser.role
+    ? currentUser.role.toLowerCase().trim()
+    : "";
 
 if (currentUserRole !== "admin") {
     alert("Admin access only");
     window.location.href = "dashboard.html";
 }
 
-document.getElementById("logoutBtn")
-.addEventListener("click", () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    window.location.href = "login.html";
-});
+const logoutBtn = document.getElementById("logoutBtn");
+
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        window.location.href = "login.html";
+    });
+}
 
 let users = [];
 let labStats = [];
@@ -57,16 +59,14 @@ function showError(message) {
 
 async function loadAdminOverview() {
     try {
-        const response =
-        await fetch(`${API_BASE_URL}/admin/overview`, {
+        const response = await fetch(`${API_BASE_URL}/admin/overview`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
             }
         });
 
-        const data =
-        await response.json();
+        const data = await response.json();
 
         if (!response.ok) {
             throw new Error(data.message || "Unable to load admin overview");
@@ -75,30 +75,29 @@ async function loadAdminOverview() {
         users = data.users || [];
 
         document.getElementById("totalUsers").textContent =
-        data.stats.totalUsers;
+            data.stats.totalUsers;
 
         document.getElementById("totalSolves").textContent =
-        data.stats.totalSolves;
+            data.stats.totalSolves;
 
         document.getElementById("totalXp").textContent =
-        data.stats.totalXp;
+            data.stats.totalXp;
 
         document.getElementById("topRank").textContent =
-        data.stats.topRank;
+            data.stats.topRank;
 
         document.getElementById("completionRate").textContent =
-        `${data.stats.completionRate}%`;
+            `${data.stats.completionRate}%`;
 
         document.getElementById("topLearner").textContent =
-        data.stats.topLearner;
+            data.stats.topLearner;
 
         document.getElementById("newestUser").textContent =
-        users.length > 0
-        ? users[users.length - 1].username
-        : "-";
+            users.length > 0
+                ? users[users.length - 1].username
+                : "-";
 
         loadUsers(users);
-
     } catch (err) {
         console.error("Admin overview error:", err);
 
@@ -119,10 +118,12 @@ async function loadAdminOverview() {
 // User Table
 // =====================
 
-const tableBody =
-document.getElementById("usersTableBody");
+const tableBody = document.getElementById("usersTableBody");
 
 function loadUsers(userList) {
+
+    if (!tableBody) return;
+
     tableBody.innerHTML = "";
 
     if (!userList || userList.length === 0) {
@@ -133,13 +134,12 @@ function loadUsers(userList) {
                 </td>
             </tr>
         `;
-
         return;
     }
 
     userList.forEach(user => {
-        const row =
-        document.createElement("tr");
+
+        const row = document.createElement("tr");
 
         row.innerHTML = `
             <td>
@@ -178,58 +178,52 @@ function loadUsers(userList) {
             </td>
 
             <td>
-    <div class="admin-actions">
+                <div class="admin-actions">
 
-        <button
-            class="small-btn"
-            onclick="viewUser(${user.id})"
-            title="View User"
-        >
-            👁
-        </button>
+                    <button
+                        class="small-btn"
+                        onclick="viewUser(${user.id})"
+                        title="View User">
+                        👁
+                    </button>
 
-        <button
-            class="small-btn"
-            onclick="editUser(${user.id})"
-            title="Edit User"
-        >
-            ✏
-        </button>
+                    <button
+                        class="small-btn"
+                        onclick="editUser(${user.id})"
+                        title="Edit User">
+                        ✏
+                    </button>
 
-        <button
-            class="small-btn"
-            onclick="grantXp(${user.id})"
-            title="Grant XP"
-        >
-            ⚡
-        </button>
+                    <button
+                        class="small-btn"
+                        onclick="grantXp(${user.id})"
+                        title="Grant XP">
+                        ⚡
+                    </button>
 
-        <button
-            class="small-btn"
-            onclick="resetUserPassword(${user.id})"
-            title="Reset Password"
-        >
-            🔑
-        </button>
+                    <button
+                        class="small-btn"
+                        onclick="resetUserPassword(${user.id})"
+                        title="Reset Password">
+                        🔑
+                    </button>
 
-        <button
-            class="small-btn danger"
-            onclick="resetProgress(${user.id})"
-            title="Reset Progress"
-        >
-            🔄
-        </button>
+                    <button
+                        class="small-btn danger"
+                        onclick="resetProgress(${user.id})"
+                        title="Reset Progress">
+                        🔄
+                    </button>
 
-        <button
-            class="small-btn danger"
-            onclick="deleteUser(${user.id})"
-            title="Delete User"
-        >
-            🗑
-        </button>
+                    <button
+                        class="small-btn danger"
+                        onclick="deleteUser(${user.id})"
+                        title="Delete User">
+                        🗑
+                    </button>
 
-    </div>
-</td>
+                </div>
+            </td>
         `;
 
         tableBody.appendChild(row);
@@ -241,21 +235,23 @@ function loadUsers(userList) {
 // Search Users
 // =====================
 
-document.getElementById("userSearch")
-.addEventListener("input", (e) => {
-    const search =
-    e.target.value.toLowerCase();
+const userSearch = document.getElementById("userSearch");
 
-    const filtered =
-    users.filter(user =>
-        user.username.toLowerCase().includes(search) ||
-        user.email.toLowerCase().includes(search) ||
-        user.role.toLowerCase().includes(search) ||
-        user.rank.toLowerCase().includes(search)
-    );
+if (userSearch) {
+    userSearch.addEventListener("input", (e) => {
 
-    loadUsers(filtered);
-});
+        const search = e.target.value.toLowerCase();
+
+        const filtered = users.filter(user =>
+            user.username.toLowerCase().includes(search) ||
+            user.email.toLowerCase().includes(search) ||
+            user.role.toLowerCase().includes(search) ||
+            user.rank.toLowerCase().includes(search)
+        );
+
+        loadUsers(filtered);
+    });
+}
 
 
 // =====================
@@ -263,48 +259,51 @@ document.getElementById("userSearch")
 // =====================
 
 async function loadLabAnalytics() {
-    try {
-        const response =
-        await fetch(${API_BASE_URL}/admin/analytics`, {
-            method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        });
 
-        const data =
-        await response.json();
+    try {
+
+        const response = await fetch(
+            `${API_BASE_URL}/admin/analytics`,
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+        );
+
+        const data = await response.json();
 
         if (!response.ok) {
-            throw new Error(data.message || "Unable to load analytics");
+            throw new Error(
+                data.message || "Unable to load analytics"
+            );
         }
 
-        labStats =
-        data.analytics || [];
+        labStats = data.analytics || [];
 
         document.getElementById("mostSolvedLab").textContent =
-        data.mostSolvedLab || "-";
+            data.mostSolvedLab || "-";
 
         document.getElementById("leastSolvedLab").textContent =
-        data.leastSolvedLab || "-";
+            data.leastSolvedLab || "-";
 
         const analytics =
-        document.getElementById("labAnalytics");
+            document.getElementById("labAnalytics");
 
         analytics.innerHTML = "";
 
         if (labStats.length === 0) {
             analytics.innerHTML =
-            "No analytics available.";
+                "No analytics available.";
             return;
         }
 
         labStats.forEach((lab) => {
-            const item =
-            document.createElement("div");
 
-            item.className =
-            "analytics-item";
+            const item = document.createElement("div");
+
+            item.className = "analytics-item";
 
             item.innerHTML = `
                 <div class="analytics-top">
@@ -319,8 +318,8 @@ async function loadLabAnalytics() {
                 <div class="analytics-bar">
                     <div
                         class="analytics-fill"
-                        style="width:${lab.percentage}%"
-                    ></div>
+                        style="width:${lab.percentage}%">
+                    </div>
                 </div>
             `;
 
@@ -328,10 +327,11 @@ async function loadLabAnalytics() {
         });
 
     } catch (err) {
+
         console.error("Analytics error:", err);
 
         document.getElementById("labAnalytics").innerHTML =
-        "Unable to load analytics.";
+            "Unable to load analytics.";
 
         showError(err.message);
     }
@@ -344,23 +344,22 @@ async function loadLabAnalytics() {
 
 async function loadLabMonitor() {
     try {
-        const response =
-        await fetch(${API_BASE_URL}/admin/lab-monitor`, {
+        const response = await fetch(`${API_BASE_URL}/admin/lab-monitor`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
             }
         });
 
-        const data =
-        await response.json();
+        const data = await response.json();
 
         if (!response.ok) {
             throw new Error(data.message || "Unable to load lab monitor");
         }
 
-        const table =
-        document.getElementById("labMonitorTable");
+        const table = document.getElementById("labMonitorTable");
+
+        if (!table) return;
 
         table.innerHTML = "";
 
@@ -372,13 +371,11 @@ async function loadLabMonitor() {
                     </td>
                 </tr>
             `;
-
             return;
         }
 
         data.records.forEach((record) => {
-            const row =
-            document.createElement("tr");
+            const row = document.createElement("tr");
 
             row.innerHTML = `
                 <td>
@@ -402,13 +399,17 @@ async function loadLabMonitor() {
     } catch (err) {
         console.error("Lab monitor error:", err);
 
-        document.getElementById("labMonitorTable").innerHTML = `
-            <tr>
-                <td colspan="4">
-                    Unable to load monitor data.
-                </td>
-            </tr>
-        `;
+        const table = document.getElementById("labMonitorTable");
+
+        if (table) {
+            table.innerHTML = `
+                <tr>
+                    <td colspan="4">
+                        Unable to load monitor data.
+                    </td>
+                </tr>
+            `;
+        }
     }
 }
 
@@ -419,23 +420,22 @@ async function loadLabMonitor() {
 
 async function loadActivityFeed() {
     try {
-        const response =
-        await fetch(${API_BASE_URL}/admin/activity`, {
+        const response = await fetch(`${API_BASE_URL}/admin/activity`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
             }
         });
 
-        const data =
-        await response.json();
+        const data = await response.json();
 
         if (!response.ok) {
             throw new Error(data.message || "Unable to load activity");
         }
 
-        const activityFeed =
-        document.getElementById("activityFeed");
+        const activityFeed = document.getElementById("activityFeed");
+
+        if (!activityFeed) return;
 
         activityFeed.innerHTML = "";
 
@@ -446,16 +446,13 @@ async function loadActivityFeed() {
                     <p>Solved labs will appear here.</p>
                 </div>
             `;
-
             return;
         }
 
         data.activity.forEach((item) => {
-            const activity =
-            document.createElement("div");
+            const activity = document.createElement("div");
 
-            activity.className =
-            "activity-item";
+            activity.className = "activity-item";
 
             activity.innerHTML = `
                 <strong>${item.username}</strong>
@@ -469,8 +466,11 @@ async function loadActivityFeed() {
     } catch (err) {
         console.error("Activity error:", err);
 
-        document.getElementById("activityFeed").innerHTML =
-        "Unable to load activity.";
+        const activityFeed = document.getElementById("activityFeed");
+
+        if (activityFeed) {
+            activityFeed.innerHTML = "Unable to load activity.";
+        }
 
         showError(err.message);
     }
@@ -483,23 +483,22 @@ async function loadActivityFeed() {
 
 async function loadAdminLogs() {
     try {
-        const response =
-        await fetch(${API_BASE_URL}/admin/logs`, {
+        const response = await fetch(`${API_BASE_URL}/admin/logs`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
             }
         });
 
-        const data =
-        await response.json();
+        const data = await response.json();
 
         if (!response.ok) {
             throw new Error(data.message || "Unable to load admin logs");
         }
 
-        const logsBox =
-        document.getElementById("adminLogs");
+        const logsBox = document.getElementById("adminLogs");
+
+        if (!logsBox) return;
 
         logsBox.innerHTML = "";
 
@@ -516,16 +515,13 @@ async function loadAdminLogs() {
                     </div>
                 </div>
             `;
-
             return;
         }
 
         data.logs.forEach((log) => {
-            const item =
-            document.createElement("div");
+            const item = document.createElement("div");
 
-            item.className =
-            "audit-log-item";
+            item.className = "audit-log-item";
 
             item.innerHTML = `
                 <div class="audit-log-top">
@@ -559,8 +555,11 @@ async function loadAdminLogs() {
     } catch (err) {
         console.error("Admin logs error:", err);
 
-        document.getElementById("adminLogs").innerHTML =
-        "Unable to load admin logs.";
+        const logsBox = document.getElementById("adminLogs");
+
+        if (logsBox) {
+            logsBox.innerHTML = "Unable to load admin logs.";
+        }
 
         showError(err.message);
     }
@@ -573,8 +572,7 @@ async function loadAdminLogs() {
 
 async function exportUsersCsv() {
     try {
-        const response =
-        await fetch(${API_BASE_URL}/admin/export-users`, {
+        const response = await fetch(`${API_BASE_URL}/admin/export-users`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -585,25 +583,18 @@ async function exportUsersCsv() {
             throw new Error("Unable to export users");
         }
 
-        const blob =
-        await response.blob();
+        const blob = await response.blob();
 
-        const url =
-        window.URL.createObjectURL(blob);
+        const url = window.URL.createObjectURL(blob);
 
-        const link =
-        document.createElement("a");
+        const link = document.createElement("a");
 
-        link.href =
-        url;
-
-        link.download =
-        "vulnlab_users_report.csv";
+        link.href = url;
+        link.download = "vulnlab_users_report.csv";
 
         document.body.appendChild(link);
 
         link.click();
-
         link.remove();
 
         window.URL.revokeObjectURL(url);
@@ -614,7 +605,6 @@ async function exportUsersCsv() {
         alert(err.message);
     }
 }
-
 
 // =====================
 // Create User / Admin
@@ -643,7 +633,7 @@ document.getElementById("createUserForm")
     const messageBox = document.getElementById("createUserMessage");
 
     try {
-        const response = await fetch(${API_BASE_URL}/admin/users`, {
+        const response = await fetch(`${API_BASE_URL}/admin/users`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -684,13 +674,13 @@ document.getElementById("createUserForm")
     }
 });
 
+
 // =====================
 // Admin Actions
 // =====================
 
 function viewUser(userId) {
-    const user =
-    users.find(item => item.id === userId);
+    const user = users.find(item => item.id === userId);
 
     if (!user) {
         alert("User not found");
@@ -711,37 +701,32 @@ function viewUser(userId) {
 }
 
 async function editUser(userId) {
-    const user =
-    users.find(item => item.id === userId);
+    const user = users.find(item => item.id === userId);
 
     if (!user) {
         alert("User not found");
         return;
     }
 
-    const username =
-    prompt("Username:", user.username);
+    const username = prompt("Username:", user.username);
 
     if (!username) {
         return;
     }
 
-    const email =
-    prompt("Email:", user.email);
+    const email = prompt("Email:", user.email);
 
     if (!email) {
         return;
     }
 
-    const role =
-    prompt("Role (user/admin):", user.role);
+    const role = prompt("Role (user/admin):", user.role);
 
     if (!role) {
         return;
     }
 
-    const cleanRole =
-    role.toLowerCase().trim();
+    const cleanRole = role.toLowerCase().trim();
 
     if (cleanRole !== "user" && cleanRole !== "admin") {
         alert("Invalid role. Use only user or admin.");
@@ -749,9 +734,8 @@ async function editUser(userId) {
     }
 
     try {
-        const response =
-        await fetch(
-            ${API_BASE_URL}/admin/users/${userId}`,
+        const response = await fetch(
+            `${API_BASE_URL}/admin/users/${userId}`,
             {
                 method: "PUT",
                 headers: {
@@ -766,8 +750,7 @@ async function editUser(userId) {
             }
         );
 
-        const data =
-        await response.json();
+        const data = await response.json();
 
         if (!response.ok) {
             throw new Error(data.message || "Unable to update user");
@@ -787,16 +770,14 @@ async function editUser(userId) {
 }
 
 async function grantXp(userId) {
-    const user =
-    users.find(item => item.id === userId);
+    const user = users.find(item => item.id === userId);
 
     if (!user) {
         alert("User not found");
         return;
     }
 
-    const xpInput =
-    prompt(
+    const xpInput = prompt(
         `Grant XP to ${user.username}\n\nEnter XP amount:`,
         "100"
     );
@@ -805,8 +786,7 @@ async function grantXp(userId) {
         return;
     }
 
-    const xpAmount =
-    Number(xpInput);
+    const xpAmount = Number(xpInput);
 
     if (!xpAmount || xpAmount <= 0) {
         alert("Please enter a valid XP amount greater than 0.");
@@ -819,9 +799,8 @@ async function grantXp(userId) {
     }
 
     try {
-        const response =
-        await fetch(
-            ${API_BASE_URL}/admin/users/${userId}/grant-xp`,
+        const response = await fetch(
+            `${API_BASE_URL}/admin/users/${userId}/grant-xp`,
             {
                 method: "POST",
                 headers: {
@@ -834,8 +813,7 @@ async function grantXp(userId) {
             }
         );
 
-        const data =
-        await response.json();
+        const data = await response.json();
 
         if (!response.ok) {
             throw new Error(data.message || "Unable to grant XP");
@@ -859,17 +837,14 @@ async function grantXp(userId) {
 // =====================
 
 async function resetUserPassword(userId) {
-
-    const user =
-    users.find(item => item.id === userId);
+    const user = users.find(item => item.id === userId);
 
     if (!user) {
         alert("User not found");
         return;
     }
 
-    const newPassword =
-    prompt(
+    const newPassword = prompt(
         `Reset password for ${user.username}\n\nEnter new password:`
     );
 
@@ -878,14 +853,11 @@ async function resetUserPassword(userId) {
     }
 
     if (newPassword.length < 8) {
-        alert(
-            "Password must be at least 8 characters."
-        );
+        alert("Password must be at least 8 characters.");
         return;
     }
 
-    const confirmReset =
-    confirm(
+    const confirmReset = confirm(
         `Are you sure you want to reset password for ${user.username}?`
     );
 
@@ -894,10 +866,8 @@ async function resetUserPassword(userId) {
     }
 
     try {
-
-        const response =
-        await fetch(
-            ${API_BASE_URL}/admin/users/${userId}/password`,
+        const response = await fetch(
+            `${API_BASE_URL}/admin/users/${userId}/password`,
             {
                 method: "PUT",
                 headers: {
@@ -910,35 +880,25 @@ async function resetUserPassword(userId) {
             }
         );
 
-        const data =
-        await response.json();
+        const data = await response.json();
 
         if (!response.ok) {
             throw new Error(
-                data.message ||
-                "Unable to reset password"
+                data.message || "Unable to reset password"
             );
         }
 
-        alert(
-            `Password reset successfully for ${user.username}`
-        );
+        alert(`Password reset successfully for ${user.username}`);
 
         await loadAdminLogs();
 
-    }
-
-    catch (err) {
-
+    } catch (err) {
         alert(err.message);
-
     }
-
 }
 
 async function resetProgress(userId) {
-    const confirmReset =
-    confirm(
+    const confirmReset = confirm(
         "Are you sure you want to reset this user's progress and bonus XP?"
     );
 
@@ -947,9 +907,8 @@ async function resetProgress(userId) {
     }
 
     try {
-        const response =
-        await fetch(
-            ${API_BASE_URL}/admin/users/${userId}/progress`,
+        const response = await fetch(
+            `${API_BASE_URL}/admin/users/${userId}/progress`,
             {
                 method: "DELETE",
                 headers: {
@@ -958,8 +917,7 @@ async function resetProgress(userId) {
             }
         );
 
-        const data =
-        await response.json();
+        const data = await response.json();
 
         if (!response.ok) {
             throw new Error(data.message || "Unable to reset progress");
@@ -984,8 +942,7 @@ async function deleteUser(userId) {
         return;
     }
 
-    const confirmDelete =
-    confirm(
+    const confirmDelete = confirm(
         "Are you sure you want to delete this user? This will also delete their progress."
     );
 
@@ -994,9 +951,8 @@ async function deleteUser(userId) {
     }
 
     try {
-        const response =
-        await fetch(
-            ${API_BASE_URL}/admin/users/${userId}`,
+        const response = await fetch(
+            `${API_BASE_URL}/admin/users/${userId}`,
             {
                 method: "DELETE",
                 headers: {
@@ -1005,8 +961,7 @@ async function deleteUser(userId) {
             }
         );
 
-        const data =
-        await response.json();
+        const data = await response.json();
 
         if (!response.ok) {
             throw new Error(data.message || "Unable to delete user");
@@ -1025,17 +980,17 @@ async function deleteUser(userId) {
     }
 }
 
-
 // =====================
 // Quick Actions
 // =====================
 
 document.querySelectorAll(".quick-action-card")
 .forEach((card) => {
-    const text =
-    card.innerText.toLowerCase();
+
+    const text = card.innerText.toLowerCase();
 
     card.addEventListener("click", () => {
+
         if (text.includes("create admin")) {
             createUserFromAdmin();
             return;
@@ -1047,8 +1002,9 @@ document.querySelectorAll(".quick-action-card")
         }
 
         if (text.includes("lab monitor")) {
+
             const section =
-            document.getElementById("labMonitorSection");
+                document.getElementById("labMonitorSection");
 
             if (section) {
                 section.scrollIntoView({
@@ -1061,7 +1017,9 @@ document.querySelectorAll(".quick-action-card")
             return;
         }
 
-        alert("This quick action will be connected in the next phase.");
+        alert(
+            "This quick action will be connected in the next phase."
+        );
     });
 });
 
@@ -1071,13 +1029,16 @@ document.querySelectorAll(".quick-action-card")
 // =====================
 
 async function initAdminDashboard() {
+
     await loadAdminOverview();
     await loadLabAnalytics();
     await loadLabMonitor();
     await loadActivityFeed();
     await loadAdminLogs();
 
-    console.log("Admin Dashboard connected to PostgreSQL");
+    console.log(
+        "Admin Dashboard connected to PostgreSQL"
+    );
 }
 
 initAdminDashboard();

@@ -42,7 +42,7 @@ async function saveProgress(labKey) {
 
 try {
 
-await fetch(${API_BASE_URL}/progress/solve`, {
+await fetch(`${API_BASE_URL}/progress/solve`, {
 method: "POST",
 headers: {
 "Content-Type": "application/json",

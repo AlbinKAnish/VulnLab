@@ -5,7 +5,7 @@ const ssrfOutput = document.getElementById("ssrfOutput");
 
 async function saveProgress(labKey) {
     try {
-        await fetch(${API_BASE_URL}/progress/solve`, {
+        await fetch(`${API_BASE_URL}/progress/solve`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -30,7 +30,7 @@ ssrfForm.addEventListener("submit", async (e) => {
     ssrfOutput.textContent = "Loading...";
 
     try {
-        const response = await fetch(${API_BASE_URL}/ssrf/fetch`, {
+        const response = await fetch(`${API_BASE_URL}/ssrf/fetch`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

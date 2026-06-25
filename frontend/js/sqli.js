@@ -2,7 +2,7 @@ const sqliForm = document.getElementById("sqliForm");
 
 async function saveProgress(labKey) {
     try {
-        await fetch(${API_BASE_URL}/progress/solve`, {
+        await fetch(`${API_BASE_URL}/progress/solve`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -31,7 +31,7 @@ if (sqliForm) {
         output.textContent = "";
 
         try {
-            const response = await fetch(${API_BASE_URL}/sqli/login`, {
+            const response = await fetch(`${API_BASE_URL}/sqli/login`, {
                 method: "POST",
                 mode: "cors",
                 headers: {

@@ -129,7 +129,7 @@
                 cursor:pointer;
                 "
             >
-                http://localhost:5000/api/idor/chat/3.txt
+                /api/idor/chat/3.txt
             </code>
 
             <p style="margin-top:12px;color:#94a3b8;font-size:0.9rem;">
@@ -144,19 +144,14 @@
 <script src="../js/config.js"></script>
 
 <script>
+const transcriptButton = document.getElementById("viewTranscript");
+const transcriptLink = document.getElementById("transcriptLink");
 
-const transcriptButton =
-document.getElementById("viewTranscript");
-
-const transcriptLink =
-document.getElementById("transcriptLink");
-
-let currentTranscript =
-"3.txt";
+let currentTranscript = "3.txt";
 
 async function saveProgress(labKey) {
     try {
-        await fetch(${API_BASE_URL}/progress/solve`, {
+        await fetch(`${API_BASE_URL}/progress/solve`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -167,27 +162,18 @@ async function saveProgress(labKey) {
             })
         });
     } catch (err) {
-        console.error(
-            "Progress save failed:",
-            err
-        );
+        console.error("Progress save failed:", err);
     }
 }
 
 async function openTranscript(filename) {
-    const transcriptUrl =
-    ${API_BASE_URL}/idor/chat/${filename}`;
+    const transcriptUrl = `${API_BASE_URL}/idor/chat/${filename}`;
 
-    window.open(
-        transcriptUrl,
-        "_blank"
-    );
+    window.open(transcriptUrl, "_blank");
 
-    transcriptLink.textContent =
-    transcriptUrl;
+    transcriptLink.textContent = transcriptUrl;
 
-    currentTranscript =
-    filename;
+    currentTranscript = filename;
 
     if (filename === "1.txt") {
         await saveProgress("lab_idor");
@@ -198,26 +184,26 @@ async function openTranscript(filename) {
     }
 }
 
-transcriptButton.addEventListener("click", async () => {
-    await openTranscript(currentTranscript);
-});
+if (transcriptButton) {
+    transcriptButton.addEventListener("click", async () => {
+        await openTranscript(currentTranscript);
+    });
+}
 
-transcriptLink.addEventListener("click", async () => {
-    const filename =
-    prompt(
-        "Enter transcript filename:",
-        currentTranscript
-    );
+if (transcriptLink) {
+    transcriptLink.addEventListener("click", async () => {
+        const filename = prompt(
+            "Enter transcript filename:",
+            currentTranscript
+        );
 
-    if (!filename) {
-        return;
-    }
+        if (!filename) {
+            return;
+        }
 
-    await openTranscript(
-        filename.trim()
-    );
-});
-
+        await openTranscript(filename.trim());
+    });
+}
 </script>
 
 </body>
