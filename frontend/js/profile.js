@@ -115,7 +115,7 @@ function updateBasicProfile(profile) {
 
 async function loadProfile() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/profile`, {
+        const response = await fetch(${API_BASE_URL}/profile`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -140,7 +140,7 @@ async function loadProfile() {
 
 async function loadProfileProgress() {
     try {
-        const response = await fetch(`${API_BASE_URL}/api/progress`, {
+        const response = await fetch(${API_BASE_URL}/progress`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -210,7 +210,7 @@ document.getElementById("profileUpdateForm")
 
     try {
         const response =
-        await fetch(`${API_BASE_URL}/api/profile`, {
+        await fetch(${API_BASE_URL}/profile`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -300,7 +300,7 @@ document.getElementById("passwordUpdateForm")
 
     try {
         const response =
-        await fetch(`${API_BASE_URL}/api/profile/password`, {
+        await fetch(${API_BASE_URL}/profile/password`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

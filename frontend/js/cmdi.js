@@ -5,7 +5,7 @@ const cmdiOutput = document.getElementById("cmdiOutput");
 
 async function saveProgress(labKey) {
     try {
-        await fetch(`${API_BASE_URL}/api/progress/solve`, {
+        await fetch(${API_BASE_URL}/progress/solve`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -30,7 +30,7 @@ cmdiForm.addEventListener("submit", async (e) => {
     cmdiOutput.textContent = "Running...";
 
     try {
-        const response = await fetch(`${API_BASE_URL}/api/cmdi/ping`, {
+        const response = await fetch(${API_BASE_URL}/cmdi/ping`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

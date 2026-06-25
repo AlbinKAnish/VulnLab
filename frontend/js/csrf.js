@@ -10,7 +10,7 @@ const csrfMessage = document.getElementById("csrfMessage");
 
 async function saveProgress(labKey) {
     try {
-        await fetch(`${API_BASE_URL}/api/progress/solve`, {
+        await fetch(${API_BASE_URL}/progress/solve`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -30,7 +30,7 @@ async function loadProfile() {
     try {
 
         const response =
-        await fetch(`${API_BASE_URL}/api/csrf/profile`);
+        await fetch(${API_BASE_URL}/csrf/profile`);
 
         const data =
         await response.json();
@@ -62,7 +62,7 @@ contactForm.addEventListener("submit", async (e) => {
     try {
 
         const response =
-        await fetch(`${API_BASE_URL}/api/csrf/update-contact`, {
+        await fetch(${API_BASE_URL}/csrf/update-contact`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -154,7 +154,7 @@ runAttack.addEventListener("click", async () => {
     try {
 
         const response =
-        await fetch(`${API_BASE_URL}/api/csrf/update-contact`, {
+        await fetch(${API_BASE_URL}/csrf/update-contact`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

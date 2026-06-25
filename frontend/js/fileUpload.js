@@ -42,7 +42,7 @@ async function saveProgress(labKey) {
 
 try {
 
-await fetch(`${API_BASE_URL}/api/progress/solve`, {
+await fetch(${API_BASE_URL}/progress/solve`, {
 method: "POST",
 headers: {
 "Content-Type": "application/json",
@@ -104,7 +104,7 @@ fileInput.files[0]
 
 const response =
 await fetch(
-`${API_BASE_URL}/api/upload/upload`,
+`${API_BASE_URL}/upload/upload`,
 {
 method:"POST",
 body:formData

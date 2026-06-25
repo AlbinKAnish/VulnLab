@@ -58,7 +58,7 @@ function showError(message) {
 async function loadAdminOverview() {
     try {
         const response =
-        await fetch(`${API_BASE_URL}/api/admin/overview`, {
+        await fetch(`${API_BASE_URL}/admin/overview`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -265,7 +265,7 @@ document.getElementById("userSearch")
 async function loadLabAnalytics() {
     try {
         const response =
-        await fetch(`${API_BASE_URL}/api/admin/analytics`, {
+        await fetch(${API_BASE_URL}/admin/analytics`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -345,7 +345,7 @@ async function loadLabAnalytics() {
 async function loadLabMonitor() {
     try {
         const response =
-        await fetch(`${API_BASE_URL}/api/admin/lab-monitor`, {
+        await fetch(${API_BASE_URL}/admin/lab-monitor`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -420,7 +420,7 @@ async function loadLabMonitor() {
 async function loadActivityFeed() {
     try {
         const response =
-        await fetch(`${API_BASE_URL}/api/admin/activity`, {
+        await fetch(${API_BASE_URL}/admin/activity`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -484,7 +484,7 @@ async function loadActivityFeed() {
 async function loadAdminLogs() {
     try {
         const response =
-        await fetch(`${API_BASE_URL}/api/admin/logs`, {
+        await fetch(${API_BASE_URL}/admin/logs`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -574,7 +574,7 @@ async function loadAdminLogs() {
 async function exportUsersCsv() {
     try {
         const response =
-        await fetch(`${API_BASE_URL}/api/admin/export-users`, {
+        await fetch(${API_BASE_URL}/admin/export-users`, {
             method: "GET",
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -643,7 +643,7 @@ document.getElementById("createUserForm")
     const messageBox = document.getElementById("createUserMessage");
 
     try {
-        const response = await fetch(`${API_BASE_URL}/api/admin/users`, {
+        const response = await fetch(${API_BASE_URL}/admin/users`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -751,7 +751,7 @@ async function editUser(userId) {
     try {
         const response =
         await fetch(
-            `${API_BASE_URL}/api/admin/users/${userId}`,
+            ${API_BASE_URL}/admin/users/${userId}`,
             {
                 method: "PUT",
                 headers: {
@@ -821,7 +821,7 @@ async function grantXp(userId) {
     try {
         const response =
         await fetch(
-            `${API_BASE_URL}/api/admin/users/${userId}/grant-xp`,
+            ${API_BASE_URL}/admin/users/${userId}/grant-xp`,
             {
                 method: "POST",
                 headers: {
@@ -897,7 +897,7 @@ async function resetUserPassword(userId) {
 
         const response =
         await fetch(
-            `${API_BASE_URL}/api/admin/users/${userId}/password`,
+            ${API_BASE_URL}/admin/users/${userId}/password`,
             {
                 method: "PUT",
                 headers: {
@@ -949,7 +949,7 @@ async function resetProgress(userId) {
     try {
         const response =
         await fetch(
-            `${API_BASE_URL}/api/admin/users/${userId}/progress`,
+            ${API_BASE_URL}/admin/users/${userId}/progress`,
             {
                 method: "DELETE",
                 headers: {
@@ -996,7 +996,7 @@ async function deleteUser(userId) {
     try {
         const response =
         await fetch(
-            `${API_BASE_URL}/api/admin/users/${userId}`,
+            ${API_BASE_URL}/admin/users/${userId}`,
             {
                 method: "DELETE",
                 headers: {

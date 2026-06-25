@@ -156,7 +156,7 @@ let currentTranscript =
 
 async function saveProgress(labKey) {
     try {
-        await fetch(`${API_BASE_URL}/api/progress/solve`, {
+        await fetch(${API_BASE_URL}/progress/solve`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -176,7 +176,7 @@ async function saveProgress(labKey) {
 
 async function openTranscript(filename) {
     const transcriptUrl =
-    `${API_BASE_URL}/api/idor/chat/${filename}`;
+    ${API_BASE_URL}/idor/chat/${filename}`;
 
     window.open(
         transcriptUrl,

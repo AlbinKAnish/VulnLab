@@ -3,7 +3,7 @@ const commentsBox = document.getElementById("commentsBox");
 
 async function saveProgress(labKey) {
     try {
-        await fetch(`${API_BASE_URL}/api/progress/solve`, {
+        await fetch(${API_BASE_URL}/progress/solve`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -23,7 +23,7 @@ async function loadComments() {
     try {
 
         const response = await fetch(
-            `${API_BASE_URL}/api/xss/comments`
+            ${API_BASE_URL}/xss/comments`
         );
 
         const data =
@@ -106,7 +106,7 @@ try{
 const response =
 await fetch(
 
-`${API_BASE_URL}/api/xss/comment`,
+${API_BASE_URL}/xss/comment`,
 
 {
 method:"POST",

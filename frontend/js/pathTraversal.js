@@ -2,7 +2,7 @@ const downloadForm = document.getElementById("downloadForm");
 
 async function saveProgress(labKey) {
     try {
-        await fetch(`${API_BASE_URL}/api/progress/solve`, {
+        await fetch(${API_BASE_URL}/progress/solve`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -30,7 +30,7 @@ downloadForm.addEventListener("submit", async (e) => {
 
     try {
         const response = await fetch(
-            `${API_BASE_URL}/api/files/download?file=${filename}`
+            ${API_BASE_URL}/files/download?file=${filename}`
         );
 
         const data = await response.text();
