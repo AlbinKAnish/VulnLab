@@ -46,7 +46,7 @@ try{
 
 await fetch(
 
-${API_BASE_URL}/progress/solve`,
+`${API_BASE_URL}/progress/solve`,
 
 {
 method:"POST",
@@ -105,7 +105,7 @@ try{
 const response =
 await fetch(
 
-${API_BASE_URL}/jwt/employee-login`,
+`${API_BASE_URL}/jwt/employee-login`,
 
 {
 method:"POST",
@@ -254,7 +254,7 @@ try{
 const response =
 await fetch(
 
-${API_BASE_URL}/jwt/payroll`,
+`${API_BASE_URL}/jwt/payroll`,
 
 {
 method:"GET",
